@@ -28,6 +28,7 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public void addIncome(MRSZSR mrszsr) {
-    budgetEverydayDao.save(mrszsr);
+    System.out.println(mrszsr);
+    //budgetEverydayDao.save(mrszsr);
   }
 }
