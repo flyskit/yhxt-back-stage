@@ -2,6 +2,7 @@ package com.yhxt.java.controller;
 
 import com.yhxt.java.entity.MRSZSR;
 import com.yhxt.java.service.BudgetEverydayService;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,7 +27,7 @@ public class BudgetEverydayController {
    * @param mrszsr 收入信息
    */
   @RequestMapping(value = "/addIncome", method = RequestMethod.POST)
-  public void addIncome(MRSZSR mrszsr) {
+  public void addIncome(@RequestBody MRSZSR mrszsr) {
     budgetEverydayService.addIncome(mrszsr);
   }
 }
