@@ -14,7 +14,7 @@ import java.util.Date;
  * @Version 1.0
  * @Description 每日收支-收入
  */
-@Table(name = "meszsr")
+@Table(name = "mrszsr")
 @Entity
 public class MRSZSR implements Serializable {
 

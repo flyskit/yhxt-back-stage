@@ -1,11 +1,10 @@
 package com.yhxt.java.controller;
 
+import com.yhxt.java.common.ReturnInfo;
 import com.yhxt.java.entity.MRSZSR;
 import com.yhxt.java.service.BudgetEverydayService;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import com.yhxt.java.vo.BudgetEverydayVO;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -23,11 +22,29 @@ public class BudgetEverydayController {
   private BudgetEverydayService budgetEverydayService;
 
   /**
+   * 获取编号
+   * @return bh 编号
+   */
+  @RequestMapping(value = "/getBh", method = RequestMethod.POST)
+  public String getBh() {
+    return "00001";
+  }
+
+  /**
    * 添加收入账单
    * @param mrszsr 收入信息
    */
   @RequestMapping(value = "/addIncome", method = RequestMethod.POST)
-  public void addIncome(@RequestBody MRSZSR mrszsr) {
-    budgetEverydayService.addIncome(mrszsr);
+  public ReturnInfo addIncome(@RequestBody MRSZSR mrszsr) {
+    return budgetEverydayService.addIncome(mrszsr);
+  }
+
+  /**
+   * 根据条件查询记录
+   * @return returnInfo 返回信息
+   */
+  @RequestMapping(value = "/getDataByCond", method = RequestMethod.POST)
+  public ReturnInfo getDataByCond(@RequestBody BudgetEverydayVO budgetEverydayVO) {
+    return budgetEverydayService.getDataByCond(budgetEverydayVO);
   }
 }
