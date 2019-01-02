@@ -23,6 +23,7 @@ public class BudgetEverydayController {
 
   /**
    * 获取编号
+   *
    * @return bh 编号
    */
   @RequestMapping(value = "/getBh", method = RequestMethod.POST)
@@ -32,6 +33,7 @@ public class BudgetEverydayController {
 
   /**
    * 添加收入账单
+   *
    * @param mrszsr 收入信息
    */
   @RequestMapping(value = "/addIncome", method = RequestMethod.POST)
@@ -41,6 +43,7 @@ public class BudgetEverydayController {
 
   /**
    * 根据条件查询记录
+   *
    * @return returnInfo 返回信息
    */
   @RequestMapping(value = "/getDataByCond", method = RequestMethod.POST)

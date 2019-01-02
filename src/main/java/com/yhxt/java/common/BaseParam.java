@@ -1,6 +1,4 @@
-package com.yhxt.java.common;/**
- * Created by zqi on 2018/12/29.
- */
+package com.yhxt.java.common;
 
 /**
  * @ClassName BaseParam

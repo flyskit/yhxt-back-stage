@@ -1,6 +1,4 @@
-package com.yhxt.java.vo;/**
- * Created by zqi on 2018/12/29.
- */
+package com.yhxt.java.vo;
 
 import com.yhxt.java.common.BaseParam;
 
@@ -13,7 +11,7 @@ import java.util.Date;
  * @Version 1.0
  * @Description 条件状态信息
  */
-public class BudgetEverydayVO extends BaseParam{
+public class BudgetEverydayVO extends BaseParam {
   /**
    * 编号
    */

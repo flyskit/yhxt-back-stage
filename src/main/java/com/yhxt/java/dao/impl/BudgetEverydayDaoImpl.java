@@ -1,11 +1,9 @@
 package com.yhxt.java.dao.impl;
 
-import com.yhxt.java.common.PageCond;
 import com.yhxt.java.entity.MRSZSR;
 import com.yhxt.java.vo.BudgetEverydayVO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 
@@ -30,10 +28,11 @@ public class BudgetEverydayDaoImpl {
 
   /**
    * 查询：分页查询数据记录
+   *
    * @param budgetEverydayVO 查询条件
    * @return page 分页结果
    */
-  public Page<MRSZSR> getDataByCond(BudgetEverydayVO budgetEverydayVO, Pageable pageable){
+  public Page<MRSZSR> getDataByCond(BudgetEverydayVO budgetEverydayVO, Pageable pageable) {
     // 保存查询条件
     Map<String, Object> map = new HashMap<>(5);
     StringBuilder jpql = new StringBuilder("select mrszsr FROM MRSZSR mrszsr WHERE 1=1");

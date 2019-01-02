@@ -35,7 +35,7 @@ public class MRSZSR implements Serializable {
    * 录入日期
    */
   @Column(name = "lrrq")
-  private Date  lrrq;
+  private Date lrrq;
   /**
    * 收入类型
    */
@@ -65,19 +65,20 @@ public class MRSZSR implements Serializable {
   /**
    * 定义默认构造器
    */
-  private MRSZSR() {}
+  private MRSZSR() {
+  }
 
   /**
    * 重载构造器
    *
-   * @param id  id标识
-   * @param bh  创建编号
+   * @param id   id标识
+   * @param bh   创建编号
    * @param lrrq 录入日期
    * @param srlx 收入类型
    * @param szrq 收账日期
    * @param srje 收入金额
    * @param khxm 客户姓名
-   * @param bz 收入备注
+   * @param bz   收入备注
    */
   public MRSZSR(String id, String bh, Date lrrq, Integer srlx, Date szrq, BigDecimal srje, String khxm, String bz) {
     this.id = id;

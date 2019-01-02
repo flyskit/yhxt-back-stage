@@ -1,4 +1,5 @@
 package com.yhxt.java.service.impl;
+
 import com.yhxt.java.common.PageCond;
 import com.yhxt.java.common.ReturnInfo;
 import com.yhxt.java.dao.BudgetEverydayDao;
@@ -30,25 +31,25 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
 
   /**
    * 添加：收入账单
+   *
    * @param mrszsr 收入信息
    */
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public ReturnInfo addIncome(MRSZSR mrszsr) {
     ReturnInfo returnInfo;
-    System.out.println("保存前数据："+mrszsr);
     MRSZSR mrszsrNew = budgetEverydayDao.save(mrszsr);
-    System.out.println("保存后数据："+mrszsrNew);
     if (!StringUtils.hasText(mrszsrNew.getId())) {
       returnInfo = ReturnInfo.failed("操作失败");
       return returnInfo;
     }
-   returnInfo = ReturnInfo.success("操作成功");
+    returnInfo = ReturnInfo.success("操作成功");
     return returnInfo;
   }
 
   /**
    * 根据天健查询信息
+   *
    * @param budgetEverydayVO 查询条件
    * @return returnInfo 返回信息
    */
@@ -56,9 +57,7 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
   public ReturnInfo getDataByCond(BudgetEverydayVO budgetEverydayVO) {
     PageCond pageCond = budgetEverydayVO.getPage();
     Pageable pageable = new PageRequest(pageCond.getPage(), pageCond.getPageSize());
-    System.out.println("查询条件：" + budgetEverydayVO);
     Page<MRSZSR> page = budgetEverydayDao.getDataByCond(budgetEverydayVO, pageable);
-    System.out.println("查询结果：" + page.getContent());
     return ReturnInfo.success("操作成功").add("data", page);
   }
 }

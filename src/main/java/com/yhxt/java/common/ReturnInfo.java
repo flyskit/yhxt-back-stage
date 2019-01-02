@@ -1,9 +1,6 @@
-package com.yhxt.java.common;/**
- * Created by zqi on 2018/12/20.
- */
+package com.yhxt.java.common;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -46,6 +43,7 @@ public class ReturnInfo {
 
   /**
    * 获取 status。
+   *
    * @return status。
    */
   public Integer getStatus() {
@@ -61,6 +59,7 @@ public class ReturnInfo {
 
   /**
    * 获取 info。
+   *
    * @return info。
    */
   public String getInfo() {
@@ -76,6 +75,7 @@ public class ReturnInfo {
 
   /**
    * 获取 map。
+   *
    * @return map。
    */
   public Map<String, Object> getMap() {
