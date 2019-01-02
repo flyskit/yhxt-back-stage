@@ -56,7 +56,9 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
   public ReturnInfo getDataByCond(BudgetEverydayVO budgetEverydayVO) {
     PageCond pageCond = budgetEverydayVO.getPage();
     Pageable pageable = new PageRequest(pageCond.getPage(), pageCond.getPageSize());
+    System.out.println("查询条件：" + budgetEverydayVO);
     Page<MRSZSR> page = budgetEverydayDao.getDataByCond(budgetEverydayVO, pageable);
+    System.out.println("查询结果：" + page.getContent());
     return ReturnInfo.success("操作成功").add("data", page);
   }
 }

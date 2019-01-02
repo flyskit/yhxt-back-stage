@@ -55,10 +55,11 @@ public class BudgetEverydayDaoImpl {
       queryCond.append(" AND mrszsr.khxm like :khxm");
       map.put("khxm", "%" + budgetEverydayVO.getKhxm() + "%");
     }
-    if (StringUtils.hasText(budgetEverydayVO.getSrlx())) {
+    if (budgetEverydayVO.getSrlx() != null) {
       queryCond.append(" AND mrszsr.srlx = :srlx");
       map.put("srlx", budgetEverydayVO.getSrlx());
     }
+    queryCond.append(" ORDER BY mrszsr.bh desc, mrszsr.lrrq desc, mrszsr.szrq desc");
     Query query = entityManager.createQuery(jpql.append(queryCond).toString());
     map.forEach(query::setParameter);
     query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());

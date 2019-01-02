@@ -40,7 +40,7 @@ public class MRSZSR implements Serializable {
    * 收入类型
    */
   @Column(name = "srlx")
-  private int srlx;
+  private Integer srlx;
   /**
    * 收账日期
    */
@@ -79,7 +79,7 @@ public class MRSZSR implements Serializable {
    * @param khxm 客户姓名
    * @param bz 收入备注
    */
-  public MRSZSR(String id, String bh, Date lrrq, int srlx, Date szrq, BigDecimal srje, String khxm, String bz) {
+  public MRSZSR(String id, String bh, Date lrrq, Integer srlx, Date szrq, BigDecimal srje, String khxm, String bz) {
     this.id = id;
     this.bh = bh;
     this.lrrq = lrrq;
@@ -114,11 +114,11 @@ public class MRSZSR implements Serializable {
     this.lrrq = lrrq;
   }
 
-  public int getSrlx() {
+  public Integer getSrlx() {
     return srlx;
   }
 
-  public void setSrlx(int srlx) {
+  public void setSrlx(Integer srlx) {
     this.srlx = srlx;
   }
 

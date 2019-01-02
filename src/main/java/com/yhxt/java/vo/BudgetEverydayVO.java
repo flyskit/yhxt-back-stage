@@ -33,7 +33,7 @@ public class BudgetEverydayVO extends BaseParam{
   /**
    * 收入类型
    */
-  private String srlx;
+  private Integer srlx;
 
   public String getBh() {
     return bh;
@@ -67,11 +67,11 @@ public class BudgetEverydayVO extends BaseParam{
     this.khxm = khxm;
   }
 
-  public String getSrlx() {
+  public Integer getSrlx() {
     return srlx;
   }
 
-  public void setSrlx(String srlx) {
+  public void setSrlx(Integer srlx) {
     this.srlx = srlx;
   }
 
