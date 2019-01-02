@@ -27,4 +27,11 @@ public interface BudgetEverydayService {
    * @return returnInfo 返回信息
    */
   ReturnInfo getDataByCond(BudgetEverydayVO budgetEverydayVO);
+
+  /**
+   * 查询：编号
+   *
+   * @return StringBuilder 编号
+   */
+  ReturnInfo getBh();
 }

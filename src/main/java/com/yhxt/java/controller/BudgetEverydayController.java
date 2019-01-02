@@ -27,8 +27,8 @@ public class BudgetEverydayController {
    * @return bh 编号
    */
   @RequestMapping(value = "/getBh", method = RequestMethod.POST)
-  public String getBh() {
-    return "00001";
+  public ReturnInfo getBh() {
+    return budgetEverydayService.getBh();
   }
 
   /**

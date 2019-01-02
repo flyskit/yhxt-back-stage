@@ -22,4 +22,11 @@ public interface BudgetEverydayDao extends CrudRepository<MRSZSR, String> {
    * @return page 分页信息
    */
   Page<MRSZSR> getDataByCond(BudgetEverydayVO budgetEverydayVO, Pageable pageable);
+
+  /**
+   * 获取编号
+   *
+   * @return MRSZSR 信息
+   */
+  MRSZSR findFirstByOrderByLrrqDesc();
 }
