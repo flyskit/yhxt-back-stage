@@ -28,5 +28,13 @@ public interface BudgetEverydayDao extends CrudRepository<MRSZSR, String> {
    *
    * @return MRSZSR 信息
    */
-  MRSZSR findFirstByOrderByLrrqDesc();
+  MRSZSR findFirstByOrderByBhDesc();
+
+  /**
+   * 根据编号查询数据
+   *
+   * @param bh 编号
+   * @return mrszsr 收入信息
+   */
+  MRSZSR findByBh(String bh);
 }

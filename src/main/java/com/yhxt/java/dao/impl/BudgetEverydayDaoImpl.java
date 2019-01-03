@@ -43,8 +43,8 @@ public class BudgetEverydayDaoImpl {
       map.put("bh", "%" + budgetEverydayVO.getBh() + "%");
     }
     if (budgetEverydayVO.getLrrq() != null) {
-      queryCond.append(" AND mrszsr.lrrq = :lrrq");
-      map.put("lrrq", budgetEverydayVO.getLrrq());
+      queryCond.append(" AND mrszsr.lrrq like :lrrq");
+      map.put("lrrq", "%" + budgetEverydayVO.getLrrq() + "%");
     }
     if (budgetEverydayVO.getSzrq() != null) {
       queryCond.append(" AND mrszsr.szrq = :szrq");

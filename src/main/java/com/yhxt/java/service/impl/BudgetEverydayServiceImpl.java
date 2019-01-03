@@ -12,11 +12,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 /**
  * @ClassName BudgetEverydayServiceImpl
@@ -39,18 +42,24 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public ReturnInfo addIncome(MRSZSR mrszsr) {
-    ReturnInfo returnInfo;
-    MRSZSR mrszsrNew = budgetEverydayDao.save(mrszsr);
-    if (!StringUtils.hasText(mrszsrNew.getId())) {
-      returnInfo = ReturnInfo.failed("操作失败");
-      return returnInfo;
+    LocalDateTime localDateTime = LocalDateTime.now();
+    ZoneId zoneId = ZoneId.systemDefault();
+    ZonedDateTime zdt = localDateTime.atZone(zoneId);
+    MRSZSR mrszsrOld = budgetEverydayDao.findByBh(mrszsr.getBh());
+    if (mrszsrOld != null) {
+      return ReturnInfo.failed("编号已存在，请重新输入！");
     }
-    returnInfo = ReturnInfo.success("操作成功");
-    return returnInfo;
+    // 添加录入日期，格式：yyyy-MM-dd HH:mm:ss
+    mrszsr.setLrrq(Date.from(zdt.toInstant()));
+    MRSZSR mrszsrNew = budgetEverydayDao.save(mrszsr);
+    if (mrszsrNew == null) {
+      return ReturnInfo.failed("系统异常，添加失败！");
+    }
+    return ReturnInfo.success("操作成功");
   }
 
   /**
-   * 根据天健查询信息
+   * 分页条件查询
    *
    * @param budgetEverydayVO 查询条件
    * @return returnInfo 返回信息
@@ -74,12 +83,13 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
     String initDay = "01";
     String initNum = "0001";
     // 查询最新记录
-    MRSZSR mrszsr = budgetEverydayDao.findFirstByOrderByLrrqDesc();
+    MRSZSR mrszsr = budgetEverydayDao.findFirstByOrderByBhDesc();
+    System.out.println("查询结果：" + mrszsr);
     //LocalDate转换为String
     LocalDate localDate = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
     String timeString = localDate.format(formatter);
-    String timeStringSub = timeString.substring(6,8);
+    String timeStringSub = timeString.substring(6, 8);
     StringBuilder stringBuilder = new StringBuilder(timeString);
     // 判断：数据表为空，或者每个月第一天，重新改写编号
     if (mrszsr == null || initDay.equals(timeStringSub)) {
@@ -87,7 +97,7 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
       return ReturnInfo.success("操作成功").add("data", stringBuilder);
     }
     // 获取编号，截取最后四位
-    String bhLastFour = mrszsr.getBh().substring(8,12);
+    String bhLastFour = mrszsr.getBh().substring(8, 12);
     // 编号+1，位数不够前面补0
     stringBuilder.append(String.format("%0" + bhLastFour.length() + "d", Integer.parseInt(bhLastFour) + 1));
     return ReturnInfo.success("操作成功").add("data", stringBuilder);

@@ -33,6 +33,8 @@
                                 <constructor-arg type="java.lang.String" value="yyyy-MM-dd" />
                             </bean>
                         </property>
+                        <!-- 时区指定 -->
+                        <property name="timeZone" value="GMT+8"/>
                     </bean>
                 </property>
             </bean>

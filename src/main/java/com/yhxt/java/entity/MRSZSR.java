@@ -1,5 +1,6 @@
 package com.yhxt.java.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -35,6 +36,7 @@ public class MRSZSR implements Serializable {
    * 录入日期
    */
   @Column(name = "lrrq")
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date lrrq;
   /**
    * 收入类型
@@ -107,6 +109,7 @@ public class MRSZSR implements Serializable {
     this.bh = bh;
   }
 
+  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   public Date getLrrq() {
     return lrrq;
   }
