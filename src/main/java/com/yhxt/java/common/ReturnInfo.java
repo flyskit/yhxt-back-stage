@@ -22,10 +22,10 @@ public class ReturnInfo {
 
   private Map<String, Object> map = new HashMap<>();
 
-  public static ReturnInfo success(String info) {
+  public static ReturnInfo success() {
     ReturnInfo result = new ReturnInfo();
     result.setStatus(200);
-    result.setInfo(info);
+    result.setInfo("操作成功！");
     return result;
   }
 
@@ -36,8 +36,8 @@ public class ReturnInfo {
     return result;
   }
 
-  public ReturnInfo add(String key, Object value) {
-    this.getMap().put(key, value);
+  public ReturnInfo add(Object value) {
+    this.getMap().put("data", value);
     return this;
   }
 

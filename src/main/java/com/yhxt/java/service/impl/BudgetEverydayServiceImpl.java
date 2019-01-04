@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.time.*;
@@ -52,7 +53,7 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
     if (mrszsrNew == null) {
       return ReturnInfo.failed("系统异常，添加失败！");
     }
-    return ReturnInfo.success("操作成功");
+    return ReturnInfo.success();
   }
 
   /**
@@ -65,6 +66,10 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
   public ReturnInfo getDataByCond(BudgetEverydayVO budgetEverydayVO) {
     PageCond pageCond = budgetEverydayVO.getPage();
     Pageable pageable = new PageRequest(pageCond.getPage(), pageCond.getPageSize());
+    // 所有条件都为空，则直接返回空内容
+    if(!StringUtils.hasText(budgetEverydayVO.getBh()) && !StringUtils.hasText(budgetEverydayVO.getKhxm()) && budgetEverydayVO.getLrrq() == null && budgetEverydayVO.getSzrq() == null && budgetEverydayVO.getSrlx() == null) {
+      return ReturnInfo.success().add("");
+    }
     if (budgetEverydayVO.getLrrq() != null) {
       // 时间条件，设置endTime，用于between and条件查询
       LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(budgetEverydayVO.getLrrq().getTime()), ZoneId.systemDefault());;
@@ -73,7 +78,7 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
       budgetEverydayVO.setEndTime(endTime);
     }
     Page<MRSZSR> page = budgetEverydayDao.getDataByCond(budgetEverydayVO, pageable);
-    return ReturnInfo.success("操作成功").add("data", page);
+    return ReturnInfo.success().add(page);
   }
 
   /**
@@ -97,12 +102,12 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
     // 判断：数据表为空，或者每个月第一天，重新改写编号
     if (mrszsr == null || initDay.equals(timeStringSub)) {
       stringBuilder.append(initNum);
-      return ReturnInfo.success("操作成功").add("data", stringBuilder);
+      return ReturnInfo.success().add(stringBuilder);
     }
     // 获取编号，截取最后四位
     String bhLastFour = mrszsr.getBh().substring(8, 12);
     // 编号+1，位数不够前面补0
     stringBuilder.append(String.format("%0" + bhLastFour.length() + "d", Integer.parseInt(bhLastFour) + 1));
-    return ReturnInfo.success("操作成功").add("data", stringBuilder);
+    return ReturnInfo.success().add(stringBuilder);
   }
 }
