@@ -14,10 +14,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
@@ -68,6 +65,13 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
   public ReturnInfo getDataByCond(BudgetEverydayVO budgetEverydayVO) {
     PageCond pageCond = budgetEverydayVO.getPage();
     Pageable pageable = new PageRequest(pageCond.getPage(), pageCond.getPageSize());
+    if (budgetEverydayVO.getLrrq() != null) {
+      // 时间条件，设置endTime，用于between and条件查询
+      LocalDateTime localDateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(budgetEverydayVO.getLrrq().getTime()), ZoneId.systemDefault());;
+      LocalDateTime endOfDay = localDateTime.with(LocalTime.MAX);
+      Date endTime = Date.from(endOfDay.atZone(ZoneId.systemDefault()).toInstant());
+      budgetEverydayVO.setEndTime(endTime);
+    }
     Page<MRSZSR> page = budgetEverydayDao.getDataByCond(budgetEverydayVO, pageable);
     return ReturnInfo.success("操作成功").add("data", page);
   }
@@ -84,7 +88,6 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
     String initNum = "0001";
     // 查询最新记录
     MRSZSR mrszsr = budgetEverydayDao.findFirstByOrderByBhDesc();
-    System.out.println("查询结果：" + mrszsr);
     //LocalDate转换为String
     LocalDate localDate = LocalDate.now();
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");

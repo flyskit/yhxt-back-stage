@@ -37,38 +37,48 @@ public class BudgetEverydayDaoImpl {
     Map<String, Object> map = new HashMap<>(5);
     StringBuilder jpql = new StringBuilder("select mrszsr FROM MRSZSR mrszsr WHERE 1=1");
     StringBuilder queryCond = new StringBuilder();
-    // 查询条件
+    // 编号-模糊查询
     if (StringUtils.hasText(budgetEverydayVO.getBh())) {
       queryCond.append(" AND mrszsr.bh like :bh");
       map.put("bh", "%" + budgetEverydayVO.getBh() + "%");
     }
+    // 录入日期-模糊查询
     if (budgetEverydayVO.getLrrq() != null) {
-      queryCond.append(" AND mrszsr.lrrq like :lrrq");
-      map.put("lrrq", "%" + budgetEverydayVO.getLrrq() + "%");
+      queryCond.append(" AND mrszsr.lrrq between :lrrq and :endTime");
+      map.put("lrrq", budgetEverydayVO.getLrrq());
+      map.put("endTime", budgetEverydayVO.getEndTime());
     }
+    // 收账日期
     if (budgetEverydayVO.getSzrq() != null) {
       queryCond.append(" AND mrszsr.szrq = :szrq");
       map.put("szrq", budgetEverydayVO.getSzrq());
     }
+    // 客户姓名-模糊查询
     if (StringUtils.hasText(budgetEverydayVO.getKhxm())) {
       queryCond.append(" AND mrszsr.khxm like :khxm");
       map.put("khxm", "%" + budgetEverydayVO.getKhxm() + "%");
     }
+    // 输入类型
     if (budgetEverydayVO.getSrlx() != null) {
       queryCond.append(" AND mrszsr.srlx = :srlx");
       map.put("srlx", budgetEverydayVO.getSrlx());
     }
     queryCond.append(" ORDER BY mrszsr.bh desc, mrszsr.lrrq desc, mrszsr.szrq desc");
-    Query query = entityManager.createQuery(jpql.append(queryCond).toString());
-    map.forEach(query::setParameter);
-    query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
-    query.setMaxResults(pageable.getPageSize());
-    @SuppressWarnings(value = "unchecked")
-    List<MRSZSR> list = query.getResultList();
-    StringBuilder jpql2 = new StringBuilder("select count(*) FROM MRSZSR mrszsr WHERE 1=1");
-    Query query2 = entityManager.createQuery(jpql2.append(queryCond).toString());
-    map.forEach(query2::setParameter);
-    long total = (Long) query2.getSingleResult();
-    return new PageImpl<>(list, pageable, total);
+    try {
+      Query query = entityManager.createQuery(jpql.append(queryCond).toString());
+      map.forEach(query::setParameter);
+      query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());
+      query.setMaxResults(pageable.getPageSize());
+      @SuppressWarnings(value = "unchecked")
+      List<MRSZSR> list = query.getResultList();
+      StringBuilder jpql2 = new StringBuilder("select count(*) FROM MRSZSR mrszsr WHERE 1=1");
+      Query query2 = entityManager.createQuery(jpql2.append(queryCond).toString());
+      map.forEach(query2::setParameter);
+      long total = (Long) query2.getSingleResult();
+      return new PageImpl<>(list, pageable, total);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return null;
+    }
   }
 }

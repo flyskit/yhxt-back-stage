@@ -36,7 +36,6 @@ public class MRSZSR implements Serializable {
    * 录入日期
    */
   @Column(name = "lrrq")
-  @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private Date lrrq;
   /**
    * 收入类型
