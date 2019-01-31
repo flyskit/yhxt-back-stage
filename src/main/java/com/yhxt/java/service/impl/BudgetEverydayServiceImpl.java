@@ -63,6 +63,7 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
    * @return returnInfo 返回信息
    */
   @Override
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
   public ReturnInfo getDataByCond(BudgetEverydayVO budgetEverydayVO) {
     PageCond pageCond = budgetEverydayVO.getPage();
     Pageable pageable = new PageRequest(pageCond.getPage(), pageCond.getPageSize());
@@ -87,6 +88,7 @@ public class BudgetEverydayServiceImpl implements BudgetEverydayService {
    * @return StringBuilder 编号
    */
   @Override
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
   public ReturnInfo getBh() {
     // 每个月初始第一天
     String initDay = "01";

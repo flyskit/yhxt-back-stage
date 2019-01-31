@@ -63,10 +63,16 @@ public class JGMXDXX implements Serializable {
   private Integer gq;
 
   /**
-   * 合计平方
+   * 合计铝合金平方
    */
-  @Column(name = "hjpf")
-  private BigDecimal hjpf;
+  @Column(name = "hjlhjpf")
+  private BigDecimal hjlhjpf;
+
+  /**
+   * 合计玻璃平方
+   */
+  @Column(name = "hjblpf")
+  private BigDecimal hjblpf;
 
   /**
    * 合计片数
@@ -80,6 +86,9 @@ public class JGMXDXX implements Serializable {
   @Column(name = "zt")
   private Integer zt;
 
+  @Column(name = "bz")
+  private String bz;
+
   /**
    * 默认构造器
    */
@@ -90,26 +99,30 @@ public class JGMXDXX implements Serializable {
   /**
    * 构造器重载
    *
-   * @param bh   编号
-   * @param khxm 客户姓名
-   * @param dz   地址
-   * @param dh   电话
-   * @param xdlx 下单类型
-   * @param gq   工期
-   * @param hjpf 合计平方
-   * @param hjps 合计片数
-   * @param zt   状态
+   * @param bh      编号
+   * @param khxm    客户姓名
+   * @param dz      地址
+   * @param dh      电话
+   * @param xdlx    下单类型
+   * @param gq      工期
+   * @param hjlhjpf 合计铝合金平方
+   * @param hjblpf  合计玻璃平方
+   * @param hjps    合计片数
+   * @param zt      状态
+   * @param bz      备注
    */
-  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, BigDecimal hjpf, Integer hjps, Integer zt) {
+  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, BigDecimal hjlhjpf, BigDecimal hjblpf, Integer hjps, Integer zt, String bz) {
     this.bh = bh;
     this.khxm = khxm;
     this.dz = dz;
     this.dh = dh;
     this.xdlx = xdlx;
     this.gq = gq;
-    this.hjpf = hjpf;
+    this.hjlhjpf = hjlhjpf;
+    this.hjblpf = hjblpf;
     this.hjps = hjps;
     this.zt = zt;
+    this.bz = bz;
   }
 
   public static long getSerialVersionUID() {
@@ -172,12 +185,20 @@ public class JGMXDXX implements Serializable {
     this.gq = gq;
   }
 
-  public BigDecimal getHjpf() {
-    return hjpf;
+  public BigDecimal getHjlhjpf() {
+    return hjlhjpf;
   }
 
-  public void setHjpf(BigDecimal hjpf) {
-    this.hjpf = hjpf;
+  public void setHjlhjpf(BigDecimal hjlhjpf) {
+    this.hjlhjpf = hjlhjpf;
+  }
+
+  public BigDecimal getHjblpf() {
+    return hjblpf;
+  }
+
+  public void setHjblpf(BigDecimal hjblpf) {
+    this.hjblpf = hjblpf;
   }
 
   public Integer getHjps() {
@@ -196,6 +217,14 @@ public class JGMXDXX implements Serializable {
     this.zt = zt;
   }
 
+  public String getBz() {
+    return bz;
+  }
+
+  public void setBz(String bz) {
+    this.bz = bz;
+  }
+
   @Override
   public String toString() {
     return "JGMXDXX{" +
@@ -206,9 +235,11 @@ public class JGMXDXX implements Serializable {
             ", dh='" + dh + '\'' +
             ", xdlx=" + xdlx +
             ", gq=" + gq +
-            ", hjpf=" + hjpf +
+            ", hjlhjpf=" + hjlhjpf +
+            ", hjblpf=" + hjblpf +
             ", hjps=" + hjps +
             ", zt=" + zt +
+            ", bz='" + bz + '\'' +
             '}';
   }
 }

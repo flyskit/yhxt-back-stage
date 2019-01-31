@@ -47,11 +47,17 @@
             </props>
         </property>
         <!--声明entity实体所在包-->
-        <property name="packagesToScan" value="com.yhxt.java.entity"/>
+        <property name="packagesToScan" value="com.yhxt.*.entity"/>
+            <!--<list>-->
+                <!--<value>com.yhxt.java.entity</value>-->
+                <!--<value>com.yhxt.cwgl.entity</value>-->
+                <!--<value>com.yhxt.khxd.entity</value>-->
+            <!--</list>-->
+        <!--</property>-->
     </bean>
 
     <!--配置jpa管理的包-->
-    <jpa:repositories base-package="com.yhxt.java.dao" repository-impl-postfix="Impl"
+    <jpa:repositories base-package="com.yhxt.*.dao" repository-impl-postfix="Impl"
                       entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="transactionManager"/>
 
     <tx:annotation-driven/>
