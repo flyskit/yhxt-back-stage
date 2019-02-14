@@ -18,4 +18,10 @@ public interface CrystalSteelDoorService {
    * @return baseMessage 返回信息
    */
   BaseMessage addData(CrystalSteelDoorParamVO crystalSteelDoorParamVO);
+
+  /**
+   * 获取编号
+   * @return baseMessage 返回信息
+   */
+  BaseMessage getBh();
 }

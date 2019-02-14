@@ -14,6 +14,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 /**
@@ -65,4 +67,33 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
     }
     return BaseMessage.success();
   }
+
+  /**
+   * 获取编号
+   * @return baseMessage 返回信息
+   */
+  @Override
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
+  public BaseMessage getBh() {
+    String initDay = "01";
+    String initNum = "0001";
+    JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findFirstByOrderByBhDesc();
+    //LocalDate转换为String
+    LocalDate localDate = LocalDate.now();
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+    String timeString = localDate.format(formatter);
+    String timeStringSub = timeString.substring(6, 8);
+    StringBuilder stringBuilder = new StringBuilder(timeString);
+    // 判断：数据表为空，或者每个月第一天，重新改写编号
+    if (jgmxdxx == null || initDay.equals(timeStringSub)) {
+      stringBuilder.append(initNum);
+      return BaseMessage.success().add(stringBuilder);
+    }
+    // 获取编号，截取最后四位
+    String bhLastFour = jgmxdxx.getBh().substring(8, 12);
+    // 编号+1，位数不够前面补0
+    stringBuilder.append(String.format("%0" + bhLastFour.length() + "d", Integer.parseInt(bhLastFour) + 1));
+    return BaseMessage.success().add(stringBuilder);
+  }
 }
+

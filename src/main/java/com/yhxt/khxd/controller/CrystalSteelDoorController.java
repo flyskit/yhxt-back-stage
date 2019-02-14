@@ -34,4 +34,13 @@ public class CrystalSteelDoorController {
   public BaseMessage addData(@RequestBody CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
     return crystalSteelDoorService.addData(crystalSteelDoorParamVO);
   }
+
+  /**
+   * 获取编号
+   * @return baseMessage 返回信息
+   */
+  @RequestMapping(value = "/jgm/getBh", method = RequestMethod.POST)
+  public BaseMessage getBh() {
+    return crystalSteelDoorService.getBh();
+  }
 }
