@@ -1,5 +1,6 @@
 package com.yhxt.khxd.service.impl;
 
+import com.yhxt.common.BaseException;
 import com.yhxt.common.BaseMessage;
 import com.yhxt.khxd.dao.CrystalSteelDoorOrderAndSizeDao;
 import com.yhxt.khxd.dao.CrystalSteelDoorOrderDao;
@@ -9,11 +10,16 @@ import com.yhxt.khxd.entity.JGMXDXX;
 import com.yhxt.khxd.entity.XDXXACCXX;
 import com.yhxt.khxd.service.CrystalSteelDoorService;
 import com.yhxt.khxd.vo.CrystalSteelDoorParamVO;
+import com.yhxt.sjgl.dao.DataManageOnCryStalSteelDoorHandleDao;
+import com.yhxt.sjgl.entity.JGMLSXX;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -38,6 +44,12 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   private CrystalSteelDoorOrderAndSizeDao crystalSteelDoorOrderAndSizeDao;
 
   /**
+   * 数据管理-拉手信息
+   */
+  @Resource
+  private DataManageOnCryStalSteelDoorHandleDao dataManageOnCryStalSteelDoorHandleDao;
+
+  /**
    * 添加
    *
    * @param crystalSteelDoorParamVO 参数
@@ -46,22 +58,23 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public BaseMessage addData(CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
+    crystalSteelDoorParamVO = this.dataHandle(crystalSteelDoorParamVO);
     JGMXDXX jgmxdxx = crystalSteelDoorParamVO.getXdxx();
     JGMXDXX jgmxdxxNew = crystalSteelDoorOrderDao.save(jgmxdxx);
-    if (jgmxdxxNew == null) {
+    if (StringUtils.isEmpty(jgmxdxxNew)) {
       return BaseMessage.failed("添加下单信息失败！");
     }
     List<JGMCCXX> list = crystalSteelDoorParamVO.getCcxx();
     for (JGMCCXX jgmccxx : list) {
       JGMCCXX jgmccxxNew = crystalSteelDoorSizeDao.save(jgmccxx);
-      if (jgmccxxNew == null) {
+      if (StringUtils.isEmpty(jgmccxxNew)) {
         return BaseMessage.failed("添加尺寸信息失败！");
       }
       XDXXACCXX xdxxaccxx = new XDXXACCXX();
       xdxxaccxx.setXdxxId(jgmxdxxNew.getId());
       xdxxaccxx.setCcxxId(jgmccxxNew.getId());
       XDXXACCXX xdxxaccxxNew = crystalSteelDoorOrderAndSizeDao.save(xdxxaccxx);
-      if (xdxxaccxxNew == null) {
+      if (StringUtils.isEmpty(xdxxaccxxNew)) {
         return BaseMessage.failed("添加关联信息失败！");
       }
     }
@@ -69,7 +82,58 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   }
 
   /**
+   * 订单数据处理
+   *
+   * @param crystalSteelDoorParamVO 订单信息
+   * @return crystalSteelDoorParamVO
+   */
+  private CrystalSteelDoorParamVO dataHandle(CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
+    BigDecimal totalAluminiumAlloySquare = new BigDecimal("0");
+    BigDecimal totalGlassSquare = new BigDecimal("0");
+    Integer totalNumberOfSlices = new Integer("0");
+    List<JGMCCXX> list = crystalSteelDoorParamVO.getCcxx();
+    for (JGMCCXX jgmccxx : list) {
+      /* 获取拉手信息 */
+      JGMLSXX jgmlsxx = this.getCrystalSteelDoorHandleInfo(jgmccxx.getLs());
+      if (StringUtils.isEmpty(jgmlsxx)) {
+        throw new BaseException("未找到相关拉手信息");
+      }
+      /* 逻辑处理 */
+      jgmccxx.setBlgd(jgmccxx.getLhjgd().subtract(jgmlsxx.getGd()));
+      jgmccxx.setBlkd(jgmccxx.getLhjkd().subtract(jgmlsxx.getKd()));
+      totalAluminiumAlloySquare = totalAluminiumAlloySquare.add(jgmccxx.getLhjpf());
+      totalGlassSquare = totalGlassSquare.add(jgmccxx.getBlpf());
+      totalNumberOfSlices = totalNumberOfSlices + jgmccxx.getPs();
+    }
+    JGMXDXX jgmxdxx = crystalSteelDoorParamVO.getXdxx();
+    jgmxdxx.setHjlhjpf(totalAluminiumAlloySquare);
+    jgmxdxx.setHjblpf(totalGlassSquare);
+    jgmxdxx.setHjps(totalNumberOfSlices);
+    return crystalSteelDoorParamVO;
+  }
+
+  /**
+   * 根据拉手编号查找尺寸信息
+   *
+   * @param bh 编号
+   * @return jgmlsxx 晶钢门拉手信息
+   */
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
+  @Cacheable(value = "lsccxx", key = "#bh + 'findByBh'")
+  public JGMLSXX getCrystalSteelDoorHandleInfo(Integer bh) {
+    if (StringUtils.isEmpty(bh)) {
+      throw new BaseException("编号为空");
+    }
+    try {
+      return dataManageOnCryStalSteelDoorHandleDao.findByBh(bh);
+    } catch (Exception e) {
+      throw new BaseException("查找拉手-出现未知异常", e);
+    }
+  }
+
+  /**
    * 获取编号
+   *
    * @return baseMessage 返回信息
    */
   @Override

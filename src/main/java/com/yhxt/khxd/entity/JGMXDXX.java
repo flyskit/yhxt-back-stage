@@ -86,6 +86,9 @@ public class JGMXDXX implements Serializable {
   @Column(name = "zt")
   private Integer zt;
 
+  /**
+   * 备注
+   */
   @Column(name = "bz")
   private String bz;
 

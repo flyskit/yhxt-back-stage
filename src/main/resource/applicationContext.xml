@@ -48,12 +48,6 @@
         </property>
         <!--声明entity实体所在包-->
         <property name="packagesToScan" value="com.yhxt.*.entity"/>
-            <!--<list>-->
-                <!--<value>com.yhxt.java.entity</value>-->
-                <!--<value>com.yhxt.cwgl.entity</value>-->
-                <!--<value>com.yhxt.khxd.entity</value>-->
-            <!--</list>-->
-        <!--</property>-->
     </bean>
 
     <!--配置jpa管理的包-->
@@ -74,7 +68,7 @@
                     <property name="name" value="default"/>
                 </bean>
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
-                    <property name="name" value="department"/>
+                    <property name="name" value="lsccxx"/>
                 </bean>
             </set>
         </property>

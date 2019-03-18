@@ -35,7 +35,7 @@ public class JGMCCXX implements Serializable {
    * 拉手
    */
   @Column(name = "ls")
-  private String ls;
+  private Integer ls;
 
   /**
    * 颜色
@@ -74,12 +74,6 @@ public class JGMCCXX implements Serializable {
   private String bz;
 
   /**
-   * 扣减尺寸
-   */
-  @Column(name = "kjcc")
-  private Integer kjcc;
-
-  /**
    * 玻璃高度
    */
   @Column(name = "blgd")
@@ -115,12 +109,11 @@ public class JGMCCXX implements Serializable {
    * @param ps    片数
    * @param lhjpf 铝合金平方
    * @param bz    备注
-   * @param kjcc  扣减尺寸
    * @param blgd  玻璃高度
    * @param blkd  玻璃宽度
    * @param blpf  玻璃平方
    */
-  public JGMCCXX(Integer cclx, String ls, String ys, BigDecimal lhjgd, BigDecimal lhjkd, Integer ps, BigDecimal lhjpf, String bz, Integer kjcc, BigDecimal blgd, BigDecimal blkd, BigDecimal blpf) {
+  public JGMCCXX(Integer cclx, Integer ls, String ys, BigDecimal lhjgd, BigDecimal lhjkd, Integer ps, BigDecimal lhjpf, String bz, BigDecimal blgd, BigDecimal blkd, BigDecimal blpf) {
     this.cclx = cclx;
     this.ls = ls;
     this.ys = ys;
@@ -129,7 +122,6 @@ public class JGMCCXX implements Serializable {
     this.ps = ps;
     this.lhjpf = lhjpf;
     this.bz = bz;
-    this.kjcc = kjcc;
     this.blgd = blgd;
     this.blkd = blkd;
     this.blpf = blpf;
@@ -155,11 +147,11 @@ public class JGMCCXX implements Serializable {
     this.cclx = cclx;
   }
 
-  public String getLs() {
+  public Integer getLs() {
     return ls;
   }
 
-  public void setLs(String ls) {
+  public void setLs(Integer ls) {
     this.ls = ls;
   }
 
@@ -211,14 +203,6 @@ public class JGMCCXX implements Serializable {
     this.bz = bz;
   }
 
-  public Integer getKjcc() {
-    return kjcc;
-  }
-
-  public void setKjcc(Integer kjcc) {
-    this.kjcc = kjcc;
-  }
-
   public BigDecimal getBlgd() {
     return blgd;
   }
@@ -236,6 +220,11 @@ public class JGMCCXX implements Serializable {
   }
 
   public BigDecimal getBlpf() {
+    this.blpf = this.getBlgd()
+            .multiply(this.getBlkd())
+            .multiply(BigDecimal.valueOf(0.000001))
+            .multiply(BigDecimal.valueOf(this.getPs()))
+            .setScale(3, BigDecimal.ROUND_HALF_UP);
     return blpf;
   }
 
@@ -255,7 +244,6 @@ public class JGMCCXX implements Serializable {
             ", ps=" + ps +
             ", lhjpf=" + lhjpf +
             ", bz='" + bz + '\'' +
-            ", kjcc=" + kjcc +
             ", blgd=" + blgd +
             ", blkd=" + blkd +
             ", blpf=" + blpf +
