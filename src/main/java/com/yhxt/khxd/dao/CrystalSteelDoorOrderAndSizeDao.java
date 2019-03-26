@@ -3,6 +3,8 @@ package com.yhxt.khxd.dao;
 import com.yhxt.khxd.entity.XDXXACCXX;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.List;
+
 /**
  * @ClassName CrystalSteelDoorOrderAndSizeDao
  * @Author zqi
@@ -11,4 +13,11 @@ import org.springframework.data.repository.CrudRepository;
  * @Description
  */
 public interface CrystalSteelDoorOrderAndSizeDao extends CrudRepository<XDXXACCXX, String> {
+  /**
+   * 根据下单信息ID查找所有记录
+   *
+   * @param id 下单信息ID
+   * @return list
+   */
+  List<XDXXACCXX> findByXdxxId(String id);
 }

@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @ClassName JGMXDXX
@@ -81,6 +82,16 @@ public class JGMXDXX implements Serializable {
   private Integer hjps;
 
   /**
+   * 创建人
+   */
+  private String cjr;
+
+  /**
+   * 创建时间
+   */
+  private Date cjsj;
+
+  /**
    * 订单状态
    */
   @Column(name = "zt")
@@ -111,10 +122,12 @@ public class JGMXDXX implements Serializable {
    * @param hjlhjpf 合计铝合金平方
    * @param hjblpf  合计玻璃平方
    * @param hjps    合计片数
+   * @param cjr     创建人
+   * @param cjsj    创建时间
    * @param zt      状态
    * @param bz      备注
    */
-  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, BigDecimal hjlhjpf, BigDecimal hjblpf, Integer hjps, Integer zt, String bz) {
+  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, BigDecimal hjlhjpf, BigDecimal hjblpf, Integer hjps, String cjr, Date cjsj, Integer zt, String bz) {
     this.bh = bh;
     this.khxm = khxm;
     this.dz = dz;
@@ -124,6 +137,8 @@ public class JGMXDXX implements Serializable {
     this.hjlhjpf = hjlhjpf;
     this.hjblpf = hjblpf;
     this.hjps = hjps;
+    this.cjr = cjr;
+    this.cjsj = cjsj;
     this.zt = zt;
     this.bz = bz;
   }
@@ -228,6 +243,22 @@ public class JGMXDXX implements Serializable {
     this.bz = bz;
   }
 
+  public String getCjr() {
+    return cjr;
+  }
+
+  public void setCjr(String cjr) {
+    this.cjr = cjr;
+  }
+
+  public Date getCjsj() {
+    return cjsj;
+  }
+
+  public void setCjsj(Date cjsj) {
+    this.cjsj = cjsj;
+  }
+
   @Override
   public String toString() {
     return "JGMXDXX{" +
@@ -241,6 +272,8 @@ public class JGMXDXX implements Serializable {
             ", hjlhjpf=" + hjlhjpf +
             ", hjblpf=" + hjblpf +
             ", hjps=" + hjps +
+            ", cjr='" + cjr + '\'' +
+            ", cjsj=" + cjsj +
             ", zt=" + zt +
             ", bz='" + bz + '\'' +
             '}';

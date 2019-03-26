@@ -13,7 +13,16 @@ import org.springframework.data.repository.CrudRepository;
 public interface CrystalSteelDoorOrderDao extends CrudRepository<JGMXDXX, String> {
   /**
    * 获取编号-排序后获取最新一条记录
+   *
    * @return jgmxdxx 信息
    */
   JGMXDXX findFirstByOrderByBhDesc();
+
+  /**
+   * 根据编号查找记录
+   *
+   * @param bh 编号
+   * @return jgmxdxx
+   */
+  JGMXDXX findByBh(String bh);
 }

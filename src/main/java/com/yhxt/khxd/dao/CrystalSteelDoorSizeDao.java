@@ -11,4 +11,11 @@ import org.springframework.data.repository.CrudRepository;
  * @Description
  */
 public interface CrystalSteelDoorSizeDao extends CrudRepository<JGMCCXX, String> {
+  /**
+   * 根据ID查找记录
+   *
+   * @param ccxxId ID
+   * @return jgmccxx
+   */
+  JGMCCXX findById(String ccxxId);
 }

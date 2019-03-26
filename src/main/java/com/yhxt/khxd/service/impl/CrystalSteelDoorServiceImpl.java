@@ -21,7 +21,12 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -78,7 +83,7 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
         return BaseMessage.failed("添加关联信息失败！");
       }
     }
-    return BaseMessage.success();
+    return BaseMessage.success().add(crystalSteelDoorParamVO);
   }
 
   /**
@@ -109,6 +114,11 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
     jgmxdxx.setHjlhjpf(totalAluminiumAlloySquare);
     jgmxdxx.setHjblpf(totalGlassSquare);
     jgmxdxx.setHjps(totalNumberOfSlices);
+    LocalDateTime localDateTime = LocalDateTime.now();
+    ZoneId zoneId = ZoneId.systemDefault();
+    ZonedDateTime zdt = localDateTime.atZone(zoneId);
+    jgmxdxx.setCjsj(Date.from(zdt.toInstant()));
+    jgmxdxx.setCjr("张三");
     return crystalSteelDoorParamVO;
   }
 
@@ -158,6 +168,31 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
     // 编号+1，位数不够前面补0
     stringBuilder.append(String.format("%0" + bhLastFour.length() + "d", Integer.parseInt(bhLastFour) + 1));
     return BaseMessage.success().add(stringBuilder);
+  }
+
+  /**
+   * 根据编号查询记录
+   *
+   * @param bh 编号
+   * @return baseMessage
+   */
+  @Override
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
+  public BaseMessage getDataByBh(String bh) {
+    if (StringUtils.isEmpty(bh)) {
+      return BaseMessage.failed("请重新输入编号！");
+    }
+    JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findByBh(bh);
+    if (StringUtils.isEmpty(jgmxdxx)) {
+      return BaseMessage.failed("暂无记录！");
+    }
+    List<XDXXACCXX> list = crystalSteelDoorOrderAndSizeDao.findByXdxxId(jgmxdxx.getId());
+    List<JGMCCXX> jgmccxxList = new LinkedList<>();
+    for (XDXXACCXX xdxxaccxx : list) {
+      JGMCCXX jgmccxx = crystalSteelDoorSizeDao.findById(xdxxaccxx.getCcxxId());
+      jgmccxxList.add(jgmccxx);
+    }
+    return BaseMessage.success().add(new CrystalSteelDoorParamVO(jgmxdxx, jgmccxxList));
   }
 }
 
