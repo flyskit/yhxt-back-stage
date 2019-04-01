@@ -33,4 +33,10 @@ public interface CrystalSteelDoorService {
    * @return baseMessage
    */
   BaseMessage getDataByBh(String bh);
+
+  /**
+   * 查询今日已下单
+   * @return baseMessage
+   */
+  BaseMessage getDataByToDay();
 }

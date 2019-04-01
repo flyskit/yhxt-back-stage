@@ -20,10 +20,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
@@ -193,6 +190,27 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
       jgmccxxList.add(jgmccxx);
     }
     return BaseMessage.success().add(new CrystalSteelDoorParamVO(jgmxdxx, jgmccxxList));
+  }
+
+  /**
+   * 查询今日已下单
+   *
+   * @return baseMessage
+   */
+  @Override
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
+  public BaseMessage getDataByToDay() {
+    LocalDate nowDate = LocalDate.now();
+    LocalDateTime startTime = LocalDateTime.of(nowDate, LocalTime.MIN);
+    LocalDateTime endTime = LocalDateTime.of(nowDate, LocalTime.MAX);
+    ZoneId zoneId = ZoneId.systemDefault();
+    ZonedDateTime zdtStartTime = startTime.atZone(zoneId);
+    ZonedDateTime zdtEndTime = endTime.atZone(zoneId);
+    List<JGMXDXX> lists = crystalSteelDoorOrderDao.findByCjsjBetween(Date.from(zdtStartTime.toInstant()), Date.from(zdtEndTime.toInstant()));
+    if (lists.isEmpty()) {
+      return BaseMessage.failed("暂无记录！");
+    }
+    return BaseMessage.success().add(lists);
   }
 }
 

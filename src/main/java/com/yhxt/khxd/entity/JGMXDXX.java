@@ -64,6 +64,12 @@ public class JGMXDXX implements Serializable {
   private Integer gq;
 
   /**
+   * 生产速率
+   */
+  @Column(name = "scsl")
+  private Integer scsl;
+
+  /**
    * 合计铝合金平方
    */
   @Column(name = "hjlhjpf")
@@ -127,11 +133,12 @@ public class JGMXDXX implements Serializable {
    * @param zt      状态
    * @param bz      备注
    */
-  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, BigDecimal hjlhjpf, BigDecimal hjblpf, Integer hjps, String cjr, Date cjsj, Integer zt, String bz) {
+  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, Integer scsl, BigDecimal hjlhjpf, BigDecimal hjblpf, Integer hjps, String cjr, Date cjsj, Integer zt, String bz) {
     this.bh = bh;
     this.khxm = khxm;
     this.dz = dz;
     this.dh = dh;
+    this.scsl = scsl;
     this.xdlx = xdlx;
     this.gq = gq;
     this.hjlhjpf = hjlhjpf;
@@ -203,6 +210,14 @@ public class JGMXDXX implements Serializable {
     this.gq = gq;
   }
 
+  public Integer getScsl() {
+    return scsl;
+  }
+
+  public void setScsl(Integer scsl) {
+    this.scsl = scsl;
+  }
+
   public BigDecimal getHjlhjpf() {
     return hjlhjpf;
   }
@@ -269,6 +284,7 @@ public class JGMXDXX implements Serializable {
             ", dh='" + dh + '\'' +
             ", xdlx=" + xdlx +
             ", gq=" + gq +
+            ", scsl=" + scsl +
             ", hjlhjpf=" + hjlhjpf +
             ", hjblpf=" + hjblpf +
             ", hjps=" + hjps +

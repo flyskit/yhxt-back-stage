@@ -38,9 +38,19 @@ public class CrystalSteelDoorController {
    * @param bh 编号
    * @return baseMessage
    */
-  @RequestMapping(value = "/jgm/getDataByBh", method = RequestMethod.POST)
+  @RequestMapping(value = "/jgm/getDataByBh/{bh}", method = RequestMethod.POST)
   public BaseMessage getDataByBh(@PathVariable String bh) {
     return crystalSteelDoorService.getDataByBh(bh);
+  }
+
+  /**
+   * 查询今日已下单
+   *
+   * @return baseMessage
+   */
+  @RequestMapping(value = "/jgm/getDataByToDay", method = RequestMethod.POST)
+  public BaseMessage getDataByToDay() {
+    return crystalSteelDoorService.getDataByToDay();
   }
 
   /**
