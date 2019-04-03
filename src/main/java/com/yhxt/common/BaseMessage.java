@@ -22,23 +22,54 @@ public class BaseMessage {
 
   private Map<String, Object> map = new HashMap<>();
 
+  /**
+   * success：默认返回info
+   *
+   * @return baseMessage
+   */
   public static BaseMessage success() {
-    BaseMessage result = new BaseMessage();
-    result.setStatus(200);
-    result.setInfo("操作成功！");
-    return result;
+    return new BaseMessage(200, "操作成功！");
   }
 
+  /**
+   * failed: 默认返回info
+   *
+   * @return baseMessage
+   */
+  public static BaseMessage failed() {
+    return new BaseMessage(100, "出现异常，请联系管理员！");
+  }
+
+  /**
+   * failed: 返回失败信息
+   *
+   * @param info 信息
+   * @return baseMessage
+   */
   public static BaseMessage failed(String info) {
-    BaseMessage result = new BaseMessage();
-    result.setStatus(100);
-    result.setInfo(info);
-    return result;
+    return new BaseMessage(100, info);
   }
 
   public BaseMessage add(Object value) {
     this.getMap().put("data", value);
     return this;
+  }
+
+  /**
+   * 声明默认构造器
+   */
+  public BaseMessage() {
+  }
+
+  /**
+   * 构造器重载
+   *
+   * @param status 状态
+   * @param info   信息
+   */
+  private BaseMessage(Integer status, String info) {
+    this.status = status;
+    this.info = info;
   }
 
   /**

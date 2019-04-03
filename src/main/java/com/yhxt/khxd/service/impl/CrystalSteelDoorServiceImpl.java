@@ -2,6 +2,7 @@ package com.yhxt.khxd.service.impl;
 
 import com.yhxt.common.BaseException;
 import com.yhxt.common.BaseMessage;
+import com.yhxt.khxd.common.CrystalSteelDoorOrderStatus;
 import com.yhxt.khxd.dao.CrystalSteelDoorOrderAndSizeDao;
 import com.yhxt.khxd.dao.CrystalSteelDoorOrderDao;
 import com.yhxt.khxd.dao.CrystalSteelDoorSizeDao;
@@ -10,8 +11,10 @@ import com.yhxt.khxd.entity.JGMXDXX;
 import com.yhxt.khxd.entity.XDXXACCXX;
 import com.yhxt.khxd.service.CrystalSteelDoorService;
 import com.yhxt.khxd.vo.CrystalSteelDoorParamVO;
+import com.yhxt.khxd.vo.CrystalSteelDoorReturnInfoVO;
 import com.yhxt.sjgl.dao.DataManageOnCryStalSteelDoorHandleDao;
 import com.yhxt.sjgl.entity.JGMLSXX;
+import com.yhxt.utils.BaseTimeTransform;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -20,9 +23,9 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -62,25 +65,18 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   public BaseMessage addData(CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
     crystalSteelDoorParamVO = this.dataHandle(crystalSteelDoorParamVO);
     JGMXDXX jgmxdxx = crystalSteelDoorParamVO.getXdxx();
-    JGMXDXX jgmxdxxNew = crystalSteelDoorOrderDao.save(jgmxdxx);
-    if (StringUtils.isEmpty(jgmxdxxNew)) {
-      return BaseMessage.failed("添加下单信息失败！");
-    }
-    List<JGMCCXX> list = crystalSteelDoorParamVO.getCcxx();
-    for (JGMCCXX jgmccxx : list) {
-      JGMCCXX jgmccxxNew = crystalSteelDoorSizeDao.save(jgmccxx);
-      if (StringUtils.isEmpty(jgmccxxNew)) {
-        return BaseMessage.failed("添加尺寸信息失败！");
+    try {
+      JGMXDXX jgmxdxxNew = crystalSteelDoorOrderDao.save(jgmxdxx);
+      List<JGMCCXX> list = crystalSteelDoorParamVO.getCcxx();
+      for (JGMCCXX jgmccxx : list) {
+        JGMCCXX jgmccxxNew = crystalSteelDoorSizeDao.save(jgmccxx);
+        crystalSteelDoorOrderAndSizeDao.save(new XDXXACCXX(jgmxdxxNew.getId(), jgmccxxNew.getId()));
       }
-      XDXXACCXX xdxxaccxx = new XDXXACCXX();
-      xdxxaccxx.setXdxxId(jgmxdxxNew.getId());
-      xdxxaccxx.setCcxxId(jgmccxxNew.getId());
-      XDXXACCXX xdxxaccxxNew = crystalSteelDoorOrderAndSizeDao.save(xdxxaccxx);
-      if (StringUtils.isEmpty(xdxxaccxxNew)) {
-        return BaseMessage.failed("添加关联信息失败！");
-      }
+      return BaseMessage.success().add(crystalSteelDoorParamVO);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return BaseMessage.failed();
     }
-    return BaseMessage.success().add(crystalSteelDoorParamVO);
   }
 
   /**
@@ -111,10 +107,7 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
     jgmxdxx.setHjlhjpf(totalAluminiumAlloySquare);
     jgmxdxx.setHjblpf(totalGlassSquare);
     jgmxdxx.setHjps(totalNumberOfSlices);
-    LocalDateTime localDateTime = LocalDateTime.now();
-    ZoneId zoneId = ZoneId.systemDefault();
-    ZonedDateTime zdt = localDateTime.atZone(zoneId);
-    jgmxdxx.setCjsj(Date.from(zdt.toInstant()));
+    jgmxdxx.setCjsj(BaseTimeTransform.localDateTimeToDate(LocalDateTime.now()));
     jgmxdxx.setCjr("张三");
     return crystalSteelDoorParamVO;
   }
@@ -134,6 +127,7 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
     try {
       return dataManageOnCryStalSteelDoorHandleDao.findByBh(bh);
     } catch (Exception e) {
+      e.printStackTrace();
       throw new BaseException("查找拉手-出现未知异常", e);
     }
   }
@@ -146,19 +140,16 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   @Override
   @Transactional(readOnly = true, rollbackFor = Exception.class)
   public BaseMessage getBh() {
-    String initDay = "01";
-    String initNum = "0001";
+    StringBuilder initNum = new StringBuilder("0001");
     JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findFirstByOrderByBhDesc();
     //LocalDate转换为String
-    LocalDate localDate = LocalDate.now();
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-    String timeString = localDate.format(formatter);
-    String timeStringSub = timeString.substring(6, 8);
+    String timeString = BaseTimeTransform.localDateToString(LocalDate.now());
+    //获取initDay
+    String initDay = timeString.substring(6, 8);
     StringBuilder stringBuilder = new StringBuilder(timeString);
-    // 判断：数据表为空，或者每个月第一天，重新改写编号
-    if (jgmxdxx == null || initDay.equals(timeStringSub)) {
-      stringBuilder.append(initNum);
-      return BaseMessage.success().add(stringBuilder);
+    // 判断：数据表为空，或者每天，重新改写编号
+    if (StringUtils.isEmpty(jgmxdxx) || !jgmxdxx.getBh().substring(6, 8).equals(initDay)) {
+      return BaseMessage.success().add(stringBuilder.append(initNum));
     }
     // 获取编号，截取最后四位
     String bhLastFour = jgmxdxx.getBh().substring(8, 12);
@@ -177,19 +168,22 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   @Transactional(readOnly = true, rollbackFor = Exception.class)
   public BaseMessage getDataByBh(String bh) {
     if (StringUtils.isEmpty(bh)) {
-      return BaseMessage.failed("请重新输入编号！");
+      return BaseMessage.failed("传入编号未找到！");
     }
-    JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findByBh(bh);
-    if (StringUtils.isEmpty(jgmxdxx)) {
-      return BaseMessage.failed("暂无记录！");
+    try {
+      JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findByBh(bh);
+      List<XDXXACCXX> list = crystalSteelDoorOrderAndSizeDao.findByXdxxId(jgmxdxx.getId());
+      List<JGMCCXX> jgmccxxList = new LinkedList<>();
+      for (XDXXACCXX xdxxaccxx : list) {
+        JGMCCXX jgmccxx = crystalSteelDoorSizeDao.findById(xdxxaccxx.getCcxxId());
+        jgmccxxList.add(jgmccxx);
+      }
+      return BaseMessage.success().add(new CrystalSteelDoorParamVO(jgmxdxx, jgmccxxList));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return BaseMessage.failed();
     }
-    List<XDXXACCXX> list = crystalSteelDoorOrderAndSizeDao.findByXdxxId(jgmxdxx.getId());
-    List<JGMCCXX> jgmccxxList = new LinkedList<>();
-    for (XDXXACCXX xdxxaccxx : list) {
-      JGMCCXX jgmccxx = crystalSteelDoorSizeDao.findById(xdxxaccxx.getCcxxId());
-      jgmccxxList.add(jgmccxx);
-    }
-    return BaseMessage.success().add(new CrystalSteelDoorParamVO(jgmxdxx, jgmccxxList));
+
   }
 
   /**
@@ -200,17 +194,80 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   @Override
   @Transactional(readOnly = true, rollbackFor = Exception.class)
   public BaseMessage getDataByToDay() {
-    LocalDate nowDate = LocalDate.now();
-    LocalDateTime startTime = LocalDateTime.of(nowDate, LocalTime.MIN);
-    LocalDateTime endTime = LocalDateTime.of(nowDate, LocalTime.MAX);
-    ZoneId zoneId = ZoneId.systemDefault();
-    ZonedDateTime zdtStartTime = startTime.atZone(zoneId);
-    ZonedDateTime zdtEndTime = endTime.atZone(zoneId);
-    List<JGMXDXX> lists = crystalSteelDoorOrderDao.findByCjsjBetween(Date.from(zdtStartTime.toInstant()), Date.from(zdtEndTime.toInstant()));
-    if (lists.isEmpty()) {
-      return BaseMessage.failed("暂无记录！");
+    LocalDateTime startTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
+    LocalDateTime endTime = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+    try {
+      List<JGMXDXX> lists = crystalSteelDoorOrderDao.findByZtAndCjsjBetweenOrderByCjsjDesc(
+              CrystalSteelDoorOrderStatus.SUBMIT.getValue(),
+              BaseTimeTransform.localDateTimeToDate(startTime),
+              BaseTimeTransform.localDateTimeToDate(endTime));
+      return BaseMessage.success().add(this.doReturnInfo(lists));
+    } catch (Exception e) {
+      e.printStackTrace();
+      return BaseMessage.failed();
     }
-    return BaseMessage.success().add(lists);
+  }
+
+  /**
+   * 处理返回结果
+   *
+   * @param lists 查询结果
+   * @return vo
+   */
+  private CrystalSteelDoorReturnInfoVO doReturnInfo(List<JGMXDXX> lists) {
+    BigDecimal totalLhjpf = new BigDecimal("0");
+    BigDecimal totalBlpf = new BigDecimal("0");
+    Integer totalPs = 0;
+    for (JGMXDXX jgmxdxx : lists) {
+      totalLhjpf = totalLhjpf.add(jgmxdxx.getHjlhjpf());
+      totalBlpf = totalBlpf.add(jgmxdxx.getHjblpf());
+      totalPs = totalPs + jgmxdxx.getHjps();
+    }
+    return new CrystalSteelDoorReturnInfoVO(lists, totalLhjpf, totalBlpf, totalPs, lists.size());
+  }
+
+  /**
+   * 查询暂存订单
+   *
+   * @return baseMessage
+   */
+  @Override
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
+  public BaseMessage getDataByTemporary() {
+    try {
+      List<JGMXDXX> lists = crystalSteelDoorOrderDao.findByZtOrderByCjsjDesc(CrystalSteelDoorOrderStatus.TEMPORARY.getValue());
+      return BaseMessage.success().add(lists);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return BaseMessage.failed();
+    }
+  }
+
+  /**
+   * 提交暂存订单
+   *
+   * @return baseMessage
+   */
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public BaseMessage subDataByTemporary(String bh) {
+    if (StringUtils.isEmpty(bh)) {
+      return BaseMessage.failed("请重新输入编号！");
+    }
+    JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findByBh(bh);
+    if (StringUtils.isEmpty(jgmxdxx)) {
+      return BaseMessage.failed("根据编号未查找到记录！");
+    }
+    jgmxdxx.setZt(CrystalSteelDoorOrderStatus.SUBMIT.getValue());
+    jgmxdxx.setCjsj(BaseTimeTransform.localDateTimeToDate(LocalDateTime.now()));
+    jgmxdxx.setCjr("张三");
+    try {
+      JGMXDXX jgmxdxxNew = crystalSteelDoorOrderDao.save(jgmxdxx);
+      return this.getDataByBh(jgmxdxxNew.getBh());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return BaseMessage.failed();
+    }
   }
 }
 

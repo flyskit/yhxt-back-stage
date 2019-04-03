@@ -30,10 +30,20 @@ public interface CrystalSteelDoorOrderDao extends CrudRepository<JGMXDXX, String
   JGMXDXX findByBh(String bh);
 
   /**
-   *  查询今日已下单
+   * 根据状态查询今日已下单
+   *
+   * @param zt        状态
    * @param startTime 开始时间
-   * @param endTime 结束时间
+   * @param endTime   结束时间
    * @return list
    */
-  List<JGMXDXX> findByCjsjBetween(Date startTime, Date endTime);
+  List<JGMXDXX> findByZtAndCjsjBetweenOrderByCjsjDesc(Integer zt, Date startTime, Date endTime);
+
+  /**
+   * 根据订单状态查询记录
+   *
+   * @param zt 状态
+   * @return list
+   */
+  List<JGMXDXX> findByZtOrderByCjsjDesc(Integer zt);
 }

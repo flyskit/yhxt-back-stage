@@ -54,6 +54,24 @@ public class CrystalSteelDoorController {
   }
 
   /**
+   * 查询暂存订单
+   * @return baseMessage
+   */
+  @RequestMapping(value = "/jgm/getDataByTemporary", method = RequestMethod.POST)
+  public BaseMessage getDataByTemporary() {
+    return crystalSteelDoorService.getDataByTemporary();
+  }
+
+  /**
+   * 提交暂存订单
+   * @return baseMessage
+   */
+  @RequestMapping(value = "/jgm/subDataByTemporary/{bh}", method = RequestMethod.POST)
+  public BaseMessage subDataByTemporary(@PathVariable String bh) {
+    return crystalSteelDoorService.subDataByTemporary(bh);
+  }
+
+  /**
    * 获取编号
    *
    * @return baseMessage 返回信息

@@ -39,4 +39,16 @@ public interface CrystalSteelDoorService {
    * @return baseMessage
    */
   BaseMessage getDataByToDay();
+
+  /**
+   * 查询暂存订单
+   * @return baseMessage
+   */
+  BaseMessage getDataByTemporary();
+
+  /**
+   * 提交暂存订单
+   * @return bassMessage
+   */
+  BaseMessage subDataByTemporary(String bh);
 }

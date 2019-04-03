@@ -64,6 +64,12 @@ public class JGMXDXX implements Serializable {
   private Integer gq;
 
   /**
+   * 订单来源
+   */
+  @Column(name = "ddly")
+  private Integer ddly;
+
+  /**
    * 生产速率
    */
   @Column(name = "scsl")
@@ -133,7 +139,7 @@ public class JGMXDXX implements Serializable {
    * @param zt      状态
    * @param bz      备注
    */
-  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, Integer scsl, BigDecimal hjlhjpf, BigDecimal hjblpf, Integer hjps, String cjr, Date cjsj, Integer zt, String bz) {
+  public JGMXDXX(String bh, String khxm, String dz, String dh, Integer xdlx, Integer gq, Integer ddly, Integer scsl, BigDecimal hjlhjpf, BigDecimal hjblpf, Integer hjps, String cjr, Date cjsj, Integer zt, String bz) {
     this.bh = bh;
     this.khxm = khxm;
     this.dz = dz;
@@ -141,6 +147,7 @@ public class JGMXDXX implements Serializable {
     this.scsl = scsl;
     this.xdlx = xdlx;
     this.gq = gq;
+    this.ddly = ddly;
     this.hjlhjpf = hjlhjpf;
     this.hjblpf = hjblpf;
     this.hjps = hjps;
@@ -208,6 +215,14 @@ public class JGMXDXX implements Serializable {
 
   public void setGq(Integer gq) {
     this.gq = gq;
+  }
+
+  public Integer getDdly() {
+    return ddly;
+  }
+
+  public void setDdly(Integer ddly) {
+    this.ddly = ddly;
   }
 
   public Integer getScsl() {
@@ -284,6 +299,7 @@ public class JGMXDXX implements Serializable {
             ", dh='" + dh + '\'' +
             ", xdlx=" + xdlx +
             ", gq=" + gq +
+            ", ddly=" + ddly +
             ", scsl=" + scsl +
             ", hjlhjpf=" + hjlhjpf +
             ", hjblpf=" + hjblpf +
