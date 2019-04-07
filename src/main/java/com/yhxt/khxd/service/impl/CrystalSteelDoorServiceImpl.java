@@ -140,8 +140,8 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   @Override
   @Transactional(readOnly = true, rollbackFor = Exception.class)
   public BaseMessage getBh() {
-    //初始编号
     StringBuilder initNum = new StringBuilder("0001");
+    //查询最新一条记录
     JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findFirstByOrderByBhDesc();
     //LocalDate转换为String
     String timeString = BaseTimeTransform.localDateToString(LocalDate.now());
