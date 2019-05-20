@@ -1,6 +1,7 @@
 package com.yhxt.khxd.service;
 
 import com.yhxt.common.BaseMessage;
+import com.yhxt.khxd.vo.CrystalSteelDoorDelParamVO;
 import com.yhxt.khxd.vo.CrystalSteelDoorParamVO;
 
 /**
@@ -36,19 +37,30 @@ public interface CrystalSteelDoorService {
 
   /**
    * 查询今日已下单
+   *
    * @return baseMessage
    */
   BaseMessage getDataByToDay();
 
   /**
    * 查询暂存订单
+   *
    * @return baseMessage
    */
   BaseMessage getDataByTemporary();
 
   /**
    * 提交暂存订单
+   *
    * @return bassMessage
    */
   BaseMessage subDataByTemporary(String bh);
+
+  /**
+   * 删除订单
+   *
+   * @param crystalSteelDoorDelParamVO 执行参数
+   * @return baseMessage
+   */
+  BaseMessage delData(CrystalSteelDoorDelParamVO crystalSteelDoorDelParamVO);
 }

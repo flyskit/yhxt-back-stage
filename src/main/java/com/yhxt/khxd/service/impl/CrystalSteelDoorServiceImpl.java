@@ -7,9 +7,11 @@ import com.yhxt.khxd.dao.CrystalSteelDoorOrderAndSizeDao;
 import com.yhxt.khxd.dao.CrystalSteelDoorOrderDao;
 import com.yhxt.khxd.dao.CrystalSteelDoorSizeDao;
 import com.yhxt.khxd.entity.JGMCCXX;
+import com.yhxt.khxd.entity.JGMJCTJ;
 import com.yhxt.khxd.entity.JGMXDXX;
 import com.yhxt.khxd.entity.XDXXACCXX;
 import com.yhxt.khxd.service.CrystalSteelDoorService;
+import com.yhxt.khxd.vo.CrystalSteelDoorDelParamVO;
 import com.yhxt.khxd.vo.CrystalSteelDoorParamVO;
 import com.yhxt.khxd.vo.CrystalSteelDoorReturnInfoVO;
 import com.yhxt.sjgl.dao.DataManageOnCryStalSteelDoorHandleDao;
@@ -184,7 +186,6 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
       e.printStackTrace();
       return BaseMessage.failed();
     }
-
   }
 
   /**
@@ -265,6 +266,35 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
     try {
       JGMXDXX jgmxdxxNew = crystalSteelDoorOrderDao.save(jgmxdxx);
       return this.getDataByBh(jgmxdxxNew.getBh());
+    } catch (Exception e) {
+      e.printStackTrace();
+      return BaseMessage.failed();
+    }
+  }
+
+  /**
+   * 删除订单
+   *
+   * @param crystalSteelDoorDelParamVO 执行参数
+   * @return baseMessage
+   */
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  public BaseMessage delData(CrystalSteelDoorDelParamVO crystalSteelDoorDelParamVO) {
+    try {
+      JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findByBh(crystalSteelDoorDelParamVO.getBh());
+      // 设置状态
+      jgmxdxx.setZt(CrystalSteelDoorOrderStatus.REVOKE.getValue());
+      // 更新状态
+      crystalSteelDoorOrderDao.save(jgmxdxx);
+      JGMJCTJ jgmjctj = new JGMJCTJ();
+      jgmjctj.setZxlb(crystalSteelDoorDelParamVO.getZxlb());
+      jgmjctj.setZxnr("删除订单！");
+      jgmjctj.setZxr("张三");
+      jgmjctj.setZxsj(BaseTimeTransform.localDateTimeToDate(LocalDateTime.now()));
+      jgmjctj.setZxyy(crystalSteelDoorDelParamVO.getZxyy());
+//      crystalSteelDoorOrderDao.save(jgmjctj);
+      return null;
     } catch (Exception e) {
       e.printStackTrace();
       return BaseMessage.failed();

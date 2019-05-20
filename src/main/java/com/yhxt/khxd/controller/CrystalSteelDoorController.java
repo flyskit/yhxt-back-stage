@@ -2,6 +2,7 @@ package com.yhxt.khxd.controller;
 
 import com.yhxt.common.BaseMessage;
 import com.yhxt.khxd.service.CrystalSteelDoorService;
+import com.yhxt.khxd.vo.CrystalSteelDoorDelParamVO;
 import com.yhxt.khxd.vo.CrystalSteelDoorParamVO;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +23,16 @@ public class CrystalSteelDoorController {
   private CrystalSteelDoorService crystalSteelDoorService;
 
   /**
+   * 获取编号
+   *
+   * @return baseMessage 返回信息
+   */
+  @RequestMapping(value = "/jgm/getBh", method = RequestMethod.POST)
+  public BaseMessage getBh() {
+    return crystalSteelDoorService.getBh();
+  }
+
+  /**
    * 添加
    *
    * @param crystalSteelDoorParamVO 接收参数
@@ -30,6 +41,17 @@ public class CrystalSteelDoorController {
   @RequestMapping(value = "/jgm/addData", method = RequestMethod.POST)
   public BaseMessage addData(@RequestBody CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
     return crystalSteelDoorService.addData(crystalSteelDoorParamVO);
+  }
+
+  /**
+   * 删除订单
+   *
+   * @param crystalSteelDoorDelParamVO 执行参数
+   * @return baseMessage 返回信息
+   */
+  @RequestMapping(value = "/jgm/delData", method = RequestMethod.POST)
+  public BaseMessage delData(@RequestBody CrystalSteelDoorDelParamVO crystalSteelDoorDelParamVO) {
+    return crystalSteelDoorService.delData(crystalSteelDoorDelParamVO);
   }
 
   /**
@@ -55,6 +77,7 @@ public class CrystalSteelDoorController {
 
   /**
    * 查询暂存订单
+   *
    * @return baseMessage
    */
   @RequestMapping(value = "/jgm/getDataByTemporary", method = RequestMethod.POST)
@@ -64,20 +87,11 @@ public class CrystalSteelDoorController {
 
   /**
    * 提交暂存订单
+   *
    * @return baseMessage
    */
   @RequestMapping(value = "/jgm/subDataByTemporary/{bh}", method = RequestMethod.POST)
   public BaseMessage subDataByTemporary(@PathVariable String bh) {
     return crystalSteelDoorService.subDataByTemporary(bh);
-  }
-
-  /**
-   * 获取编号
-   *
-   * @return baseMessage 返回信息
-   */
-  @RequestMapping(value = "/jgm/getBh", method = RequestMethod.POST)
-  public BaseMessage getBh() {
-    return crystalSteelDoorService.getBh();
   }
 }
