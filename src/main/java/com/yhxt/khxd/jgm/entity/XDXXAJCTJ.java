@@ -1,4 +1,4 @@
-package com.yhxt.khxd.entity;
+package com.yhxt.khxd.jgm.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -6,16 +6,16 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * @ClassName JGM_CCXX_XDXX
+ * @ClassName XDXXAJCTJ
  * @Author zqi
- * @Date 2019/1/18 15:59
+ * @Date 2019/4/3 18:26
  * @Version 1.0
- * @Description
+ * @Description 下单信息-进程统计
  */
-@Table(name = "jgm_xdxx_ccxx")
 @Entity
-public class XDXXACCXX implements Serializable {
-  private static final long serialVersionUID = -3246160136496835411L;
+@Table(name = "jgm_xdxx_jctj")
+public class XDXXAJCTJ implements Serializable {
+  private static final long serialVersionUID = -1706192464732211833L;
 
   /**
    * ID标识
@@ -32,31 +32,26 @@ public class XDXXACCXX implements Serializable {
   private String xdxxId;
 
   /**
-   * 尺寸信息ID
+   * 进程统计ID
    */
-  @Column(name = "ccxx_id")
-  private String ccxxId;
+  @Column(name = "jctj_id")
+  private String jctjId;
 
   /**
-   * 默认构造器
+   * 声明默认构造器
    */
-  public XDXXACCXX() {
-
+  public XDXXAJCTJ() {
   }
 
   /**
    * 构造器重载
    *
    * @param xdxxId 下单信息ID
-   * @param ccxxId 尺寸信息ID
+   * @param jctjId 进程统计ID
    */
-  public XDXXACCXX(String xdxxId, String ccxxId) {
+  public XDXXAJCTJ(String xdxxId, String jctjId) {
     this.xdxxId = xdxxId;
-    this.ccxxId = ccxxId;
-  }
-
-  public static long getSerialVersionUID() {
-    return serialVersionUID;
+    this.jctjId = jctjId;
   }
 
   public String getId() {
@@ -75,20 +70,20 @@ public class XDXXACCXX implements Serializable {
     this.xdxxId = xdxxId;
   }
 
-  public String getCcxxId() {
-    return ccxxId;
+  public String getJctjId() {
+    return jctjId;
   }
 
-  public void setCcxxId(String ccxxId) {
-    this.ccxxId = ccxxId;
+  public void setJctjId(String jctjId) {
+    this.jctjId = jctjId;
   }
 
   @Override
   public String toString() {
-    return "XDXXACCXX{" +
+    return "XDXXAJCTJ{" +
             "id='" + id + '\'' +
             ", xdxxId='" + xdxxId + '\'' +
-            ", ccxxId='" + ccxxId + '\'' +
+            ", jctjId='" + jctjId + '\'' +
             '}';
   }
 }

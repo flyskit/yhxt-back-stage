@@ -8,7 +8,7 @@
       http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
     <!--扫描Controller-->
-    <ctx:component-scan base-package="com.yhxt.*.controller"/>
+    <ctx:component-scan base-package="com.yhxt.**.controller"/>
 
     <!--配置视图解析器：把返回的方法解析为实际视图-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">

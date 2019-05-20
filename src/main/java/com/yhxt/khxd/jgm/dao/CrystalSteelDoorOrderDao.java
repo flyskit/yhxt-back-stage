@@ -1,6 +1,6 @@
-package com.yhxt.khxd.dao;
+package com.yhxt.khxd.jgm.dao;
 
-import com.yhxt.khxd.entity.JGMXDXX;
+import com.yhxt.khxd.jgm.entity.JGMXDXX;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Date;

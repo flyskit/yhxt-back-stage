@@ -1,4 +1,4 @@
-package com.yhxt.khxd.vo;
+package com.yhxt.khxd.jgm.vo;
 
 /**
  * @ClassName CrystalSteelDoorDelParamVO

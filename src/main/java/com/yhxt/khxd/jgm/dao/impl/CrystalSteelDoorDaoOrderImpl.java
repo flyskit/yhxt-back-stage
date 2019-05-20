@@ -1,4 +1,4 @@
-package com.yhxt.khxd.dao.impl;
+package com.yhxt.khxd.jgm.dao.impl;
 
 /**
  * @ClassName CrystalSteelDoorDaoImpl

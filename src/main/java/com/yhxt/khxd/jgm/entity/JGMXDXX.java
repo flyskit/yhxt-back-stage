@@ -1,4 +1,4 @@
-package com.yhxt.khxd.entity;
+package com.yhxt.khxd.jgm.entity;
 
 import org.hibernate.annotations.GenericGenerator;
 

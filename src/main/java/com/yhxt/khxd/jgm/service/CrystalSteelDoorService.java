@@ -1,8 +1,8 @@
-package com.yhxt.khxd.service;
+package com.yhxt.khxd.jgm.service;
 
 import com.yhxt.common.BaseMessage;
-import com.yhxt.khxd.vo.CrystalSteelDoorDelParamVO;
-import com.yhxt.khxd.vo.CrystalSteelDoorParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorDelParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
 
 /**
  * @ClassName CrystalSteelDoorService

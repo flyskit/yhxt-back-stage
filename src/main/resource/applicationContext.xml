@@ -11,8 +11,8 @@
       http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!--自动扫描包-->
-    <ctx:component-scan base-package="com.yhxt.*.service"/>
-    <ctx:component-scan base-package="com.yhxt.*.dao.impl"/>
+    <ctx:component-scan base-package="com.yhxt.**.service"/>
+    <ctx:component-scan base-package="com.yhxt.**.dao.impl"/>
 
     <!-- 导入属性文件 -->
     <ctx:property-placeholder location="classpath:jdbc.properties"/>
@@ -47,11 +47,11 @@
             </props>
         </property>
         <!--声明entity实体所在包-->
-        <property name="packagesToScan" value="com.yhxt.*.entity"/>
+        <property name="packagesToScan" value="com.yhxt.**.entity"/>
     </bean>
 
     <!--配置jpa管理的包-->
-    <jpa:repositories base-package="com.yhxt.*.dao" repository-impl-postfix="Impl"
+    <jpa:repositories base-package="com.yhxt.**.dao" repository-impl-postfix="Impl"
                       entity-manager-factory-ref="entityManagerFactory" transaction-manager-ref="transactionManager"/>
 
     <tx:annotation-driven/>

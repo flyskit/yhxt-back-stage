@@ -1,6 +1,6 @@
-package com.yhxt.khxd.dao;
+package com.yhxt.khxd.jgm.dao;
 
-import com.yhxt.khxd.entity.XDXXACCXX;
+import com.yhxt.khxd.jgm.entity.XDXXACCXX;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

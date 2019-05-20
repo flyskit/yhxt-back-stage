@@ -1,9 +1,9 @@
-package com.yhxt.khxd.controller;
+package com.yhxt.khxd.jgm.controller;
 
 import com.yhxt.common.BaseMessage;
-import com.yhxt.khxd.service.CrystalSteelDoorService;
-import com.yhxt.khxd.vo.CrystalSteelDoorDelParamVO;
-import com.yhxt.khxd.vo.CrystalSteelDoorParamVO;
+import com.yhxt.khxd.jgm.service.CrystalSteelDoorService;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorDelParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;

@@ -1,7 +1,7 @@
-package com.yhxt.khxd.vo;
+package com.yhxt.khxd.jgm.vo;
 
-import com.yhxt.khxd.entity.JGMCCXX;
-import com.yhxt.khxd.entity.JGMXDXX;
+import com.yhxt.khxd.jgm.entity.JGMCCXX;
+import com.yhxt.khxd.jgm.entity.JGMXDXX;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.yhxt.khxd.common;
+package com.yhxt.khxd.jgm.common;
 
 /**
  * @ClassName CrystalSteelDoorOrderType
