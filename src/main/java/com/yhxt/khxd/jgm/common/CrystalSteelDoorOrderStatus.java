@@ -9,9 +9,13 @@ package com.yhxt.khxd.jgm.common;
  */
 public enum CrystalSteelDoorOrderStatus {
   /**
-   * 暂存：0
-   * 提交：1
-   * 撤销：2
+   * 删除：0
+   * 暂存：1
+   * 已下单：2
+   * 发货：3
+   * 送货：4
+   * 返工：5
+   *
    */
   TEMPORARY(0), SUBMIT(1), REVOKE(2);
   private final Integer value;

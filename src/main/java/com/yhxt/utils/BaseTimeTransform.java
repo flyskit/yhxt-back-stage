@@ -12,7 +12,7 @@ import java.util.Date;
 
 /**
  * @ClassName BaseTimeTransform
- * @Author zqi
+ *
  * @Date 2019/4/3 10:39
  * @Version 1.0
  * @Description 公共类-时间转换

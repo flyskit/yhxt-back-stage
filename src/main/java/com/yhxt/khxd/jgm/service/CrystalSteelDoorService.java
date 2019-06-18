@@ -1,7 +1,7 @@
 package com.yhxt.khxd.jgm.service;
 
 import com.yhxt.common.BaseMessage;
-import com.yhxt.khxd.jgm.vo.CrystalSteelDoorDelParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorFindParamVO;
 import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
 
 /**
@@ -59,8 +59,24 @@ public interface CrystalSteelDoorService {
   /**
    * 删除订单
    *
-   * @param crystalSteelDoorDelParamVO 执行参数
+   * @param bh 编号
    * @return baseMessage
    */
-  BaseMessage delData(CrystalSteelDoorDelParamVO crystalSteelDoorDelParamVO);
+  BaseMessage delData(String bh);
+
+  /**
+   * 更新订单
+   *
+   * @param crystalSteelDoorParamVO 更新信息
+   * @return baseMessage
+   */
+  BaseMessage updateData(CrystalSteelDoorParamVO crystalSteelDoorParamVO);
+
+  /**
+   * 历史记录-条件查下账
+   *
+   * @param crystalSteelDoorFindParamVO 查询条件
+   * @return baseMessage
+   */
+  BaseMessage pageDataByCond(CrystalSteelDoorFindParamVO crystalSteelDoorFindParamVO);
 }

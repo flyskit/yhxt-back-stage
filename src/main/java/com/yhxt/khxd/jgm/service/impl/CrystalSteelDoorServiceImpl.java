@@ -2,22 +2,26 @@ package com.yhxt.khxd.jgm.service.impl;
 
 import com.yhxt.common.BaseException;
 import com.yhxt.common.BaseMessage;
+import com.yhxt.common.PageCond;
 import com.yhxt.khxd.jgm.common.CrystalSteelDoorOrderStatus;
 import com.yhxt.khxd.jgm.dao.CrystalSteelDoorOrderAndSizeDao;
 import com.yhxt.khxd.jgm.dao.CrystalSteelDoorOrderDao;
 import com.yhxt.khxd.jgm.dao.CrystalSteelDoorSizeDao;
 import com.yhxt.khxd.jgm.entity.JGMCCXX;
-import com.yhxt.khxd.jgm.entity.JGMJCTJ;
 import com.yhxt.khxd.jgm.entity.JGMXDXX;
 import com.yhxt.khxd.jgm.entity.XDXXACCXX;
 import com.yhxt.khxd.jgm.service.CrystalSteelDoorService;
-import com.yhxt.khxd.jgm.vo.CrystalSteelDoorDelParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorFindParamVO;
 import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
 import com.yhxt.khxd.jgm.vo.CrystalSteelDoorReturnInfoVO;
 import com.yhxt.sjgl.dao.DataManageOnCryStalSteelDoorHandleDao;
 import com.yhxt.sjgl.entity.JGMLSXX;
 import com.yhxt.utils.BaseTimeTransform;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +68,7 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
    */
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  @CacheEvict(value = "lsjl", allEntries = true)
   public BaseMessage addData(CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
     crystalSteelDoorParamVO = this.dataHandle(crystalSteelDoorParamVO);
     JGMXDXX jgmxdxx = crystalSteelDoorParamVO.getXdxx();
@@ -75,6 +80,27 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
         crystalSteelDoorOrderAndSizeDao.save(new XDXXACCXX(jgmxdxxNew.getId(), jgmccxxNew.getId()));
       }
       return BaseMessage.success().add(crystalSteelDoorParamVO);
+    } catch (Exception e) {
+      e.printStackTrace();
+      return BaseMessage.failed();
+    }
+  }
+
+  /**
+   * 更新
+   *
+   * @param crystalSteelDoorParamVO 参数
+   * @return baseMessage 返回信息
+   */
+  @Override
+  @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  @CacheEvict(value = "lsjl", allEntries = true)
+  public BaseMessage updateData(CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
+    crystalSteelDoorParamVO = this.dataHandle(crystalSteelDoorParamVO);
+    try {
+      crystalSteelDoorOrderDao.save(crystalSteelDoorParamVO.getXdxx());
+      crystalSteelDoorSizeDao.save(crystalSteelDoorParamVO.getCcxx());
+      return BaseMessage.success();
     } catch (Exception e) {
       e.printStackTrace();
       return BaseMessage.failed();
@@ -98,7 +124,7 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
       if (StringUtils.isEmpty(jgmlsxx)) {
         throw new BaseException("未找到相关拉手信息");
       }
-      /* 逻辑处理 */
+      /* 计算尺寸 */
       jgmccxx.setBlgd(jgmccxx.getLhjgd().subtract(jgmlsxx.getGd()));
       jgmccxx.setBlkd(jgmccxx.getLhjkd().subtract(jgmlsxx.getKd()));
       totalAluminiumAlloySquare = totalAluminiumAlloySquare.add(jgmccxx.getLhjpf());
@@ -252,6 +278,7 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
    */
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+  @CacheEvict(value = "lsjl", allEntries = true)
   public BaseMessage subDataByTemporary(String bh) {
     if (StringUtils.isEmpty(bh)) {
       return BaseMessage.failed("请重新输入编号！");
@@ -275,30 +302,40 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   /**
    * 删除订单
    *
-   * @param crystalSteelDoorDelParamVO 执行参数
+   * @param bh 编号
    * @return baseMessage
    */
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-  public BaseMessage delData(CrystalSteelDoorDelParamVO crystalSteelDoorDelParamVO) {
+  @CacheEvict(value = "lsjl", allEntries = true)
+  public BaseMessage delData(String bh) {
     try {
-      JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findByBh(crystalSteelDoorDelParamVO.getBh());
+      JGMXDXX jgmxdxx = crystalSteelDoorOrderDao.findByBh(bh);
       // 设置状态
       jgmxdxx.setZt(CrystalSteelDoorOrderStatus.REVOKE.getValue());
       // 更新状态
       crystalSteelDoorOrderDao.save(jgmxdxx);
-      JGMJCTJ jgmjctj = new JGMJCTJ();
-      jgmjctj.setZxlb(crystalSteelDoorDelParamVO.getZxlb());
-      jgmjctj.setZxnr("删除订单！");
-      jgmjctj.setZxr("张三");
-      jgmjctj.setZxsj(BaseTimeTransform.localDateTimeToDate(LocalDateTime.now()));
-      jgmjctj.setZxyy(crystalSteelDoorDelParamVO.getZxyy());
-//      crystalSteelDoorOrderDao.save(jgmjctj);
-      return null;
+      return BaseMessage.success();
     } catch (Exception e) {
       e.printStackTrace();
       return BaseMessage.failed();
     }
+  }
+
+  /**
+   * 历史记录-条件查询
+   *
+   * @param crystalSteelDoorFindParamVO 查询条件
+   * @return baseMessage
+   */
+  @Override
+  @Transactional(readOnly = true, rollbackFor = Exception.class)
+  @Cacheable(value = "lsjl", key = "#crystalSteelDoorFindParamVO + 'pageDataByCond'")
+  public BaseMessage pageDataByCond(CrystalSteelDoorFindParamVO crystalSteelDoorFindParamVO) {
+    PageCond pageCond = crystalSteelDoorFindParamVO.getPage();
+    Pageable pageable = new PageRequest(pageCond.getPage(), pageCond.getPageSize());
+    Page<JGMXDXX> page = crystalSteelDoorOrderDao.pageDataByCond(crystalSteelDoorFindParamVO, pageable);
+    return BaseMessage.success().add(page);
   }
 }
 

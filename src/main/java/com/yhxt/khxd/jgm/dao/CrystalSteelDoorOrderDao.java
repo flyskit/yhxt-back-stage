@@ -1,6 +1,9 @@
 package com.yhxt.khxd.jgm.dao;
 
 import com.yhxt.khxd.jgm.entity.JGMXDXX;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorFindParamVO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Date;
@@ -46,4 +49,13 @@ public interface CrystalSteelDoorOrderDao extends CrudRepository<JGMXDXX, String
    * @return list
    */
   List<JGMXDXX> findByZtOrderByCjsjDesc(Integer zt);
+
+  /**
+   * 历史记录-条件查询
+   *
+   * @param crystalSteelDoorFindParamVO 查询条件
+   * @param pageable                    分页条件
+   * @return page
+   */
+  Page<JGMXDXX> pageDataByCond(CrystalSteelDoorFindParamVO crystalSteelDoorFindParamVO, Pageable pageable);
 }

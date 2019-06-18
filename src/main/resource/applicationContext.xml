@@ -70,6 +70,9 @@
                 <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
                     <property name="name" value="lsccxx"/>
                 </bean>
+                <bean class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean">
+                    <property name="name" value="lsjl"/>
+                </bean>
             </set>
         </property>
     </bean>

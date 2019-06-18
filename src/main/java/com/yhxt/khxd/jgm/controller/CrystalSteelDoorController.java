@@ -2,7 +2,7 @@ package com.yhxt.khxd.jgm.controller;
 
 import com.yhxt.common.BaseMessage;
 import com.yhxt.khxd.jgm.service.CrystalSteelDoorService;
-import com.yhxt.khxd.jgm.vo.CrystalSteelDoorDelParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorFindParamVO;
 import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,7 +33,7 @@ public class CrystalSteelDoorController {
   }
 
   /**
-   * 添加
+   * 添加订单
    *
    * @param crystalSteelDoorParamVO 接收参数
    * @return baseMessage 返回信息
@@ -44,14 +44,25 @@ public class CrystalSteelDoorController {
   }
 
   /**
-   * 删除订单
+   * 更新信息
    *
-   * @param crystalSteelDoorDelParamVO 执行参数
+   * @param crystalSteelDoorParamVO 接收参数
    * @return baseMessage 返回信息
    */
-  @RequestMapping(value = "/jgm/delData", method = RequestMethod.POST)
-  public BaseMessage delData(@RequestBody CrystalSteelDoorDelParamVO crystalSteelDoorDelParamVO) {
-    return crystalSteelDoorService.delData(crystalSteelDoorDelParamVO);
+  @RequestMapping(value = "/jgm/updateData", method = RequestMethod.POST)
+  public BaseMessage updateData(@RequestBody CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
+    return crystalSteelDoorService.updateData(crystalSteelDoorParamVO);
+  }
+
+  /**
+   * 删除订单
+   *
+   * @param bh 编号
+   * @return baseMessage 返回信息
+   */
+  @RequestMapping(value = "/jgm/delData/{bh}", method = RequestMethod.POST)
+  public BaseMessage delData(@PathVariable String bh) {
+    return crystalSteelDoorService.delData(bh);
   }
 
   /**
@@ -66,7 +77,7 @@ public class CrystalSteelDoorController {
   }
 
   /**
-   * 查询今日已下单
+   * 今日已下单-查询
    *
    * @return baseMessage
    */
@@ -76,7 +87,7 @@ public class CrystalSteelDoorController {
   }
 
   /**
-   * 查询暂存订单
+   * 暂存列表-查询暂存订单
    *
    * @return baseMessage
    */
@@ -86,12 +97,22 @@ public class CrystalSteelDoorController {
   }
 
   /**
-   * 提交暂存订单
+   * 暂存列表-提交暂存订单
    *
    * @return baseMessage
    */
   @RequestMapping(value = "/jgm/subDataByTemporary/{bh}", method = RequestMethod.POST)
   public BaseMessage subDataByTemporary(@PathVariable String bh) {
     return crystalSteelDoorService.subDataByTemporary(bh);
+  }
+
+  /**
+   * 历史记录-条件查询
+   *
+   * @return baseMessage
+   */
+  @RequestMapping(value = "/jgm/pageDataByCond", method = RequestMethod.POST)
+  public BaseMessage pageDataByCond(@RequestBody CrystalSteelDoorFindParamVO crystalSteelDoorFindParamVO) {
+    return crystalSteelDoorService.pageDataByCond(crystalSteelDoorFindParamVO);
   }
 }
