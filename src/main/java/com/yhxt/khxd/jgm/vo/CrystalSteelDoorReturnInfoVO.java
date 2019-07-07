@@ -1,6 +1,6 @@
 package com.yhxt.khxd.jgm.vo;
 
-import com.yhxt.khxd.jgm.entity.JGMXDXX;
+import com.yhxt.khxd.jgm.dto.HistoryRecordDTO;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,25 +13,6 @@ import java.util.List;
  * @Description
  */
 public class CrystalSteelDoorReturnInfoVO {
-  /**
-   * 数据记录
-   */
-  private List<JGMXDXX> list;
-
-  /**
-   * 铝合金总平方
-   */
-  private BigDecimal totalLhjpf;
-
-  /**
-   * 玻璃总平方
-   */
-  private BigDecimal totalBlpf;
-
-  /**
-   * 总片数
-   */
-  private Integer totalPs;
 
   /**
    * 总数量
@@ -39,58 +20,57 @@ public class CrystalSteelDoorReturnInfoVO {
   private Integer totalNum;
 
   /**
-   * 声明默认构造器
+   * 门板总平方
    */
+  private BigDecimal totalDoorSquare;
+
+  /**
+   * 玻璃总平方
+   */
+  private BigDecimal totalGlassSquare;
+
+  /**
+   * 门板总数量
+   */
+  private Integer totalDoorNum;
+
+  /**
+   * 返工-订单数量
+   */
+  private Integer totalReworkNum;
+  /**
+   * 返工-门板平方
+   */
+  private BigDecimal totalReworkDoorSquare;
+
+  /**
+   * 返工-玻璃平方
+   */
+  private BigDecimal totalReworkGlassSquare;
+
+  /**
+   * 返工-门板数量
+   */
+  private Integer totalReworkDoorNum;
+
+  /**
+   * 数据记录
+   */
+  private List<HistoryRecordDTO> list;
+
   public CrystalSteelDoorReturnInfoVO() {
   }
 
-  /**
-   * 重载构造器
-   *
-   * @param list       数据记录
-   * @param totalLhjpf 铝合金总平方
-   * @param totalBlpf  玻璃总平方
-   * @param totalPs    总片数
-   * @param totalNum   总数量
-   */
-  public CrystalSteelDoorReturnInfoVO(List<JGMXDXX> list, BigDecimal totalLhjpf, BigDecimal totalBlpf, Integer totalPs, Integer totalNum) {
-    this.list = list;
-    this.totalLhjpf = totalLhjpf;
-    this.totalBlpf = totalBlpf;
-    this.totalPs = totalPs;
+  public CrystalSteelDoorReturnInfoVO(Integer totalNum, BigDecimal totalDoorSquare, BigDecimal totalGlassSquare, Integer totalDoorNum, Integer totalReworkNum, BigDecimal totalReworkDoorSquare, BigDecimal totalReworkGlassSquare, Integer totalReworkDoorNum, List<HistoryRecordDTO> list) {
     this.totalNum = totalNum;
-  }
-
-  public List<JGMXDXX> getList() {
-    return list;
-  }
-
-  public void setList(List<JGMXDXX> list) {
+    this.totalDoorSquare = totalDoorSquare;
+    this.totalGlassSquare = totalGlassSquare;
+    this.totalDoorNum = totalDoorNum;
+    this.totalReworkNum = totalReworkNum;
+    this.totalReworkDoorSquare = totalReworkDoorSquare;
+    this.totalReworkGlassSquare = totalReworkGlassSquare;
+    this.totalReworkDoorNum = totalReworkDoorNum;
     this.list = list;
-  }
-
-  public BigDecimal getTotalLhjpf() {
-    return totalLhjpf;
-  }
-
-  public void setTotalLhjpf(BigDecimal totalLhjpf) {
-    this.totalLhjpf = totalLhjpf;
-  }
-
-  public BigDecimal getTotalBlpf() {
-    return totalBlpf;
-  }
-
-  public void setTotalBlpf(BigDecimal totalBlpf) {
-    this.totalBlpf = totalBlpf;
-  }
-
-  public Integer getTotalPs() {
-    return totalPs;
-  }
-
-  public void setTotalPs(Integer totalPs) {
-    this.totalPs = totalPs;
   }
 
   public Integer getTotalNum() {
@@ -101,14 +81,82 @@ public class CrystalSteelDoorReturnInfoVO {
     this.totalNum = totalNum;
   }
 
+  public BigDecimal getTotalDoorSquare() {
+    return totalDoorSquare;
+  }
+
+  public void setTotalDoorSquare(BigDecimal totalDoorSquare) {
+    this.totalDoorSquare = totalDoorSquare;
+  }
+
+  public BigDecimal getTotalGlassSquare() {
+    return totalGlassSquare;
+  }
+
+  public void setTotalGlassSquare(BigDecimal totalGlassSquare) {
+    this.totalGlassSquare = totalGlassSquare;
+  }
+
+  public Integer getTotalDoorNum() {
+    return totalDoorNum;
+  }
+
+  public void setTotalDoorNum(Integer totalDoorNum) {
+    this.totalDoorNum = totalDoorNum;
+  }
+
+  public Integer getTotalReworkNum() {
+    return totalReworkNum;
+  }
+
+  public void setTotalReworkNum(Integer totalRewordNum) {
+    this.totalReworkNum = totalRewordNum;
+  }
+
+  public BigDecimal getTotalReworkDoorSquare() {
+    return totalReworkDoorSquare;
+  }
+
+  public void setTotalReworkDoorSquare(BigDecimal totalReworkDoorSquare) {
+    this.totalReworkDoorSquare = totalReworkDoorSquare;
+  }
+
+  public BigDecimal getTotalReworkGlassSquare() {
+    return totalReworkGlassSquare;
+  }
+
+  public void setTotalReworkGlassSquare(BigDecimal totalReworkGlassSquare) {
+    this.totalReworkGlassSquare = totalReworkGlassSquare;
+  }
+
+  public Integer getTotalReworkDoorNum() {
+    return totalReworkDoorNum;
+  }
+
+  public void setTotalReworkDoorNum(Integer totalReworkDoorNum) {
+    this.totalReworkDoorNum = totalReworkDoorNum;
+  }
+
+  public List<HistoryRecordDTO> getList() {
+    return list;
+  }
+
+  public void setList(List<HistoryRecordDTO> list) {
+    this.list = list;
+  }
+
   @Override
   public String toString() {
     return "CrystalSteelDoorReturnInfoVO{" +
-            "list=" + list +
-            ", totalLhjpf=" + totalLhjpf +
-            ", totalBlpf=" + totalBlpf +
-            ", totalPs=" + totalPs +
-            ", totalNum=" + totalNum +
+            "totalNum=" + totalNum +
+            ", totalDoorSquare=" + totalDoorSquare +
+            ", totalGlassSquare=" + totalGlassSquare +
+            ", totalDoorNum=" + totalDoorNum +
+            ", totalRewordNum=" + totalReworkNum +
+            ", totalReworkDoorSquare=" + totalReworkDoorSquare +
+            ", totalReworkGlassSquare=" + totalReworkGlassSquare +
+            ", totalReworkDoorNum=" + totalReworkDoorNum +
+            ", list=" + list +
             '}';
   }
 }

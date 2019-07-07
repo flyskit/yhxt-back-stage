@@ -77,7 +77,6 @@ public class BudgetEverydayDaoImpl {
       long total = (Long) query2.getSingleResult();
       return new PageImpl<>(list, pageable, total);
     } catch (Exception e) {
-      e.printStackTrace();
       return null;
     }
   }

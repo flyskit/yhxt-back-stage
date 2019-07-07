@@ -37,7 +37,7 @@ public class BaseMessage {
    * @return baseMessage
    */
   public static BaseMessage failed() {
-    return new BaseMessage(100, "出现异常，请联系管理员！");
+    return new BaseMessage(100, "后台出现异常！");
   }
 
   /**

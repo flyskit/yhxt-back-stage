@@ -1,9 +1,10 @@
 package com.yhxt.khxd.jgm.controller;
 
 import com.yhxt.common.BaseMessage;
+import com.yhxt.ddcl.vo.OrderQueryParamVO;
 import com.yhxt.khxd.jgm.service.CrystalSteelDoorService;
-import com.yhxt.khxd.jgm.vo.CrystalSteelDoorFindParamVO;
-import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorAddParamVO;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -16,64 +17,46 @@ import javax.annotation.Resource;
  * @Description 晶钢门模块
  */
 @RestController
-@RequestMapping(value = "/khxd")
+@RequestMapping(value = "/khxd/jgm")
 public class CrystalSteelDoorController {
 
   @Resource
   private CrystalSteelDoorService crystalSteelDoorService;
 
   /**
-   * 获取编号
+   * 创建订单
    *
+   * @param crystalSteelDoorAddParamVO 接收参数
    * @return baseMessage 返回信息
    */
-  @RequestMapping(value = "/jgm/getBh", method = RequestMethod.POST)
-  public BaseMessage getBh() {
-    return crystalSteelDoorService.getBh();
+  @RequestMapping(value = "/addData", method = RequestMethod.POST)
+  public BaseMessage addData(@RequestBody CrystalSteelDoorAddParamVO crystalSteelDoorAddParamVO) {
+    return crystalSteelDoorService.addData(crystalSteelDoorAddParamVO);
   }
 
   /**
-   * 添加订单
+   * 根据编号查询详细信息
    *
-   * @param crystalSteelDoorParamVO 接收参数
-   * @return baseMessage 返回信息
+   * @param ddbh 编号
+   * @return baseMessage
    */
-  @RequestMapping(value = "/jgm/addData", method = RequestMethod.POST)
-  public BaseMessage addData(@RequestBody CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
-    return crystalSteelDoorService.addData(crystalSteelDoorParamVO);
+  @RequestMapping(value = "/getDataByBh/{ddbh}", method = RequestMethod.POST)
+  public BaseMessage getDataByBh(@PathVariable String ddbh) {
+    if (StringUtils.isEmpty(ddbh)) {
+      return BaseMessage.failed("参数为空");
+    }
+    return crystalSteelDoorService.getDataByBh(ddbh);
   }
 
   /**
    * 更新信息
    *
-   * @param crystalSteelDoorParamVO 接收参数
+   * @param crystalSteelDoorAddParamVO 接收参数
    * @return baseMessage 返回信息
    */
-  @RequestMapping(value = "/jgm/updateData", method = RequestMethod.POST)
-  public BaseMessage updateData(@RequestBody CrystalSteelDoorParamVO crystalSteelDoorParamVO) {
-    return crystalSteelDoorService.updateData(crystalSteelDoorParamVO);
-  }
-
-  /**
-   * 删除订单
-   *
-   * @param bh 编号
-   * @return baseMessage 返回信息
-   */
-  @RequestMapping(value = "/jgm/delData/{bh}", method = RequestMethod.POST)
-  public BaseMessage delData(@PathVariable String bh) {
-    return crystalSteelDoorService.delData(bh);
-  }
-
-  /**
-   * 根据编号查找记录
-   *
-   * @param bh 编号
-   * @return baseMessage
-   */
-  @RequestMapping(value = "/jgm/getDataByBh/{bh}", method = RequestMethod.POST)
-  public BaseMessage getDataByBh(@PathVariable String bh) {
-    return crystalSteelDoorService.getDataByBh(bh);
+  @RequestMapping(value = "/updateData", method = RequestMethod.POST)
+  public BaseMessage updateData(@RequestBody CrystalSteelDoorAddParamVO crystalSteelDoorAddParamVO) {
+    return crystalSteelDoorService.updateData(crystalSteelDoorAddParamVO);
   }
 
   /**
@@ -81,38 +64,32 @@ public class CrystalSteelDoorController {
    *
    * @return baseMessage
    */
-  @RequestMapping(value = "/jgm/getDataByToDay", method = RequestMethod.POST)
+  @RequestMapping(value = "/getDataByToDay", method = RequestMethod.POST)
   public BaseMessage getDataByToDay() {
     return crystalSteelDoorService.getDataByToDay();
   }
 
   /**
-   * 暂存列表-查询暂存订单
+   * 暂存列表-查询
    *
    * @return baseMessage
    */
-  @RequestMapping(value = "/jgm/getDataByTemporary", method = RequestMethod.POST)
+  @RequestMapping(value = "/getDataByTemporary", method = RequestMethod.POST)
   public BaseMessage getDataByTemporary() {
     return crystalSteelDoorService.getDataByTemporary();
   }
 
   /**
-   * 暂存列表-提交暂存订单
+   * 条件查询
    *
+   * @param orderQueryParamVO 查询条件
    * @return baseMessage
    */
-  @RequestMapping(value = "/jgm/subDataByTemporary/{bh}", method = RequestMethod.POST)
-  public BaseMessage subDataByTemporary(@PathVariable String bh) {
-    return crystalSteelDoorService.subDataByTemporary(bh);
-  }
-
-  /**
-   * 历史记录-条件查询
-   *
-   * @return baseMessage
-   */
-  @RequestMapping(value = "/jgm/pageDataByCond", method = RequestMethod.POST)
-  public BaseMessage pageDataByCond(@RequestBody CrystalSteelDoorFindParamVO crystalSteelDoorFindParamVO) {
-    return crystalSteelDoorService.pageDataByCond(crystalSteelDoorFindParamVO);
+  @RequestMapping(value = "/condData", method = RequestMethod.POST)
+  public BaseMessage condData(@RequestBody OrderQueryParamVO orderQueryParamVO) {
+    if (StringUtils.isEmpty(orderQueryParamVO)) {
+      return BaseMessage.failed("参数为空");
+    }
+    return crystalSteelDoorService.condData(orderQueryParamVO);
   }
 }

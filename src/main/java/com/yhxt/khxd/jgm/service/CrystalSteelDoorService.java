@@ -1,8 +1,8 @@
 package com.yhxt.khxd.jgm.service;
 
 import com.yhxt.common.BaseMessage;
-import com.yhxt.khxd.jgm.vo.CrystalSteelDoorFindParamVO;
-import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
+import com.yhxt.ddcl.vo.OrderQueryParamVO;
+import com.yhxt.khxd.jgm.vo.CrystalSteelDoorAddParamVO;
 
 /**
  * @ClassName CrystalSteelDoorService
@@ -13,70 +13,48 @@ import com.yhxt.khxd.jgm.vo.CrystalSteelDoorParamVO;
  */
 public interface CrystalSteelDoorService {
   /**
-   * 添加
+   * 添加订单
    *
-   * @param crystalSteelDoorParamVO 参数
+   * @param crystalSteelDoorAddParamVO 参数
    * @return baseMessage 返回信息
    */
-  BaseMessage addData(CrystalSteelDoorParamVO crystalSteelDoorParamVO);
+  BaseMessage addData(CrystalSteelDoorAddParamVO crystalSteelDoorAddParamVO);
 
   /**
-   * 获取编号
-   *
-   * @return baseMessage 返回信息
-   */
-  BaseMessage getBh();
-
-  /**
-   * 根据编号查找记录
-   *
-   * @param bh 编号
-   * @return baseMessage
-   */
-  BaseMessage getDataByBh(String bh);
-
-  /**
-   * 查询今日已下单
+   * 今日已下单-查询
    *
    * @return baseMessage
    */
   BaseMessage getDataByToDay();
 
   /**
-   * 查询暂存订单
+   * 暂存列表-查询
    *
-   * @return baseMessage
+   * @return baseMassage
    */
   BaseMessage getDataByTemporary();
 
   /**
-   * 提交暂存订单
+   * 查询详细信息
    *
-   * @return bassMessage
-   */
-  BaseMessage subDataByTemporary(String bh);
-
-  /**
-   * 删除订单
-   *
-   * @param bh 编号
+   * @param ddbh 订单编号
    * @return baseMessage
    */
-  BaseMessage delData(String bh);
+  BaseMessage getDataByBh(String ddbh);
 
   /**
-   * 更新订单
+   * 更新记录
    *
-   * @param crystalSteelDoorParamVO 更新信息
+   * @param crystalSteelDoorAddParamVO 接受参数
    * @return baseMessage
    */
-  BaseMessage updateData(CrystalSteelDoorParamVO crystalSteelDoorParamVO);
+  BaseMessage updateData(CrystalSteelDoorAddParamVO crystalSteelDoorAddParamVO);
 
   /**
-   * 历史记录-条件查下账
+   * 条件查询记录
    *
-   * @param crystalSteelDoorFindParamVO 查询条件
+   * @param orderQueryParamVO 查询条件
    * @return baseMessage
    */
-  BaseMessage pageDataByCond(CrystalSteelDoorFindParamVO crystalSteelDoorFindParamVO);
+  BaseMessage condData(OrderQueryParamVO orderQueryParamVO);
 }
