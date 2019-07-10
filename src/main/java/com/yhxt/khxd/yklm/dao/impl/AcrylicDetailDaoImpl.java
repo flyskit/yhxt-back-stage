@@ -6,16 +6,15 @@ import com.yhxt.ddcl.common.OrderRecordType;
 import com.yhxt.ddcl.common.OrderStatus;
 import com.yhxt.ddcl.vo.OrderQueryParamVO;
 import com.yhxt.khxd.yklm.dto.AcrylicHistoryRecordDTO;
+import com.yhxt.utils.BaseSqlUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -112,10 +111,14 @@ public class AcrylicDetailDaoImpl {
    * @return page
    */
   public Page<AcrylicHistoryRecordDTO> condData(OrderQueryParamVO orderQueryParamVO, Pageable pageable) {
+    // 条件判断
+    Map<String, Object> returnMap = BaseSqlUtils.judgeCond(orderQueryParamVO);
     // 订单记录-新建状态
     Integer orderNew = OrderRecordType.NEW.getValue();
     // 保存查询条件
-    Map<String, Object> map = new HashMap<>(10);
+    @SuppressWarnings("unchecked")
+    Map<String, Object> map = (Map<String, Object>) returnMap.get("map");
+    StringBuilder queryCond = (StringBuilder) returnMap.get("queryCond");
     StringBuilder jpql = new StringBuilder("select new com.yhxt.khxd.yklm.dto.AcrylicHistoryRecordDTO(")
             .append("orderDetail.ddbh, orderDetail.khxm, orderDetail.ddlx, orderDetail.ddly, orderDetail.scsl, orderDetail.gq, ")
             .append("acrylicDetail.je, acrylicDetail.hjsl, orderDetail.bz, acrylicDetail.yjdb, orderDetail.wgsj, ")
@@ -125,59 +128,7 @@ public class AcrylicDetailDaoImpl {
             .append("left join OrderRecord orderRecord on orderRecord.ddid = orderDetail.id ")
             .append("left join AcrylicDetail acrylicDetail on acrylicDetail.id = orderGoods.spid ")
             .append("WHERE 1=1 AND orderRecord.czlb = :orderNew ");
-    StringBuilder queryCond = new StringBuilder();
-    //订单编号-模糊查询
-    if (!StringUtils.isEmpty(orderQueryParamVO.getDdbh())) {
-      queryCond.append("AND orderDetail.ddbh like :ddbh ");
-      map.put("ddbh", "%" + orderQueryParamVO.getDdbh() + "%");
-    }
-    // 订单类型
-    if (!StringUtils.isEmpty(orderQueryParamVO.getDdlx())) {
-      queryCond.append("AND orderDetail.ddlx = :ddlx ");
-      map.put("ddlx", orderQueryParamVO.getDdlx());
-    }
-    // 订单来源
-    if (!StringUtils.isEmpty(orderQueryParamVO.getDdly())) {
-      queryCond.append("AND orderDetail.ddly = :ddly ");
-      map.put("ddly", orderQueryParamVO.getDdly());
-    }
-    // 客户姓名-模糊查询
-    if (!StringUtils.isEmpty(orderQueryParamVO.getKhxm())) {
-      queryCond.append("AND orderDetail.khxm like :khxm ");
-      map.put("khxm", "%" + orderQueryParamVO.getKhxm() + "%");
-    }
-    // 商品类型
-    if (!StringUtils.isEmpty(orderQueryParamVO.getSplx())) {
-      queryCond.append("AND orderGoods.splx = :splx ");
-      map.put("splx", orderQueryParamVO.getSplx());
-    }
-    // 订单状态
-    if (!StringUtils.isEmpty(orderQueryParamVO.getDdzt())) {
-      queryCond.append("AND orderDetail.ddzt = :ddzt ");
-      map.put("ddzt", orderQueryParamVO.getDdzt());
-    }
-    // 有效状态
-    if (!StringUtils.isEmpty(orderQueryParamVO.getYxzt())) {
-      queryCond.append("AND orderDetail.zt = :yxzt ");
-      map.put("yxzt", orderQueryParamVO.getYxzt());
-    }
-    // 审核状态
-    if (!StringUtils.isEmpty(orderQueryParamVO.getShzt())) {
-      queryCond.append("AND orderDetail.shzt = :shzt ");
-      map.put("shzt", orderQueryParamVO.getShzt());
-    }
-    // 开始时间
-    if (!StringUtils.isEmpty(orderQueryParamVO.getStartTime())) {
-      queryCond.append("AND orderRecord.czsj >= :startTime ");
-      map.put("startTime", orderQueryParamVO.getStartTime());
-    }
-    // 结束时间
-    if (!StringUtils.isEmpty(orderQueryParamVO.getEndTime())) {
-      queryCond.append("AND orderRecord.czsj <= :endTime ");
-      map.put("endTime", orderQueryParamVO.getEndTime());
-    }
     map.put("orderNew", orderNew);
-    queryCond.append("ORDER BY orderRecord.czsj desc ");
     Query query = entityManager.createQuery(jpql.append(queryCond).toString());
     map.forEach(query::setParameter);
     query.setFirstResult(pageable.getPageNumber() * pageable.getPageSize());

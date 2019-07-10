@@ -6,7 +6,6 @@ import com.yhxt.common.GoodsType;
 import com.yhxt.common.PageCond;
 import com.yhxt.ddcl.common.OrderRecordType;
 import com.yhxt.ddcl.common.OrderType;
-import com.yhxt.ddcl.dao.OrderAccessoryDao;
 import com.yhxt.ddcl.dao.OrderDetailDao;
 import com.yhxt.ddcl.dao.OrderGoodsDao;
 import com.yhxt.ddcl.dao.OrderRecordDao;
@@ -26,7 +25,6 @@ import com.yhxt.khxd.yklm.service.AcrylicService;
 import com.yhxt.khxd.yklm.vo.AcrylicAddParamVO;
 import com.yhxt.khxd.yklm.vo.AcrylicTodayDetailReturnVO;
 import com.yhxt.khxd.yklm.vo.AcrylicViewDetailVO;
-import com.yhxt.sjgl.dao.AccessoryDetailDao;
 import com.yhxt.utils.BaseTimeTransform;
 import org.apache.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -72,12 +70,6 @@ public class AcrylicServiceImpl implements AcrylicService {
 
   @Resource
   private CupboardDoorSizeDao cupboardDoorSizeDao;
-
-  @Resource
-  private OrderAccessoryDao orderAccessoryDao;
-
-  @Resource
-  private AccessoryDetailDao accessoryDetailDao;
 
   @Resource
   private CupboardDoorDetailSizeDao cupboardDoorDetailSizeDao;

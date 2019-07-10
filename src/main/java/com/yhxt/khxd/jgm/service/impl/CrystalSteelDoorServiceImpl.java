@@ -1,6 +1,9 @@
 package com.yhxt.khxd.jgm.service.impl;
 
-import com.yhxt.common.*;
+import com.yhxt.common.BaseMessage;
+import com.yhxt.common.BaseStatus;
+import com.yhxt.common.GoodsType;
+import com.yhxt.common.PageCond;
 import com.yhxt.ddcl.common.OrderRecordType;
 import com.yhxt.ddcl.common.OrderType;
 import com.yhxt.ddcl.dao.OrderDetailDao;
@@ -37,7 +40,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,25 +85,13 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public BaseMessage addData(CrystalSteelDoorAddParamVO crystalSteelDoorAddParamVO) {
-    OrderDetail orderDetailNewest = orderDetailDao.findFirstByOrderByDdbhDesc();
-    // 判断编号是否为最新编号，若不是则重新制定编号
-    if (StringUtils.isEmpty(orderDetailNewest) || !orderDetailNewest.getDdbh().equals(crystalSteelDoorAddParamVO.getDdbh())) {
-      crystalSteelDoorAddParamVO.setDdbh(orderService.handleOrderNumber(orderDetailNewest).toString());
-    }
-    LocalDateTime nowTime = LocalDateTime.now();
-    Date completeTime = BaseTimeTransform.localDateTimeToDate(nowTime.plusDays(crystalSteelDoorAddParamVO.getGq()));
-    OrderDetail orderDetailToBeAdded = new OrderDetail(crystalSteelDoorAddParamVO.getDdbh(), crystalSteelDoorAddParamVO.getDdlx(), crystalSteelDoorAddParamVO.getDdly(),
-            crystalSteelDoorAddParamVO.getScsl(), crystalSteelDoorAddParamVO.getKhxm(), crystalSteelDoorAddParamVO.getDz(),
-            crystalSteelDoorAddParamVO.getDh(), crystalSteelDoorAddParamVO.getGq(), completeTime,
-            crystalSteelDoorAddParamVO.getBz(), crystalSteelDoorAddParamVO.getDdzt(),
-            AuditStatus.AUDIT_YES.getValue(), BaseStatus.VALID.getValue());
     CrystalSteelDoorDetail crystalSteelDoorDetailToBeAdded = new CrystalSteelDoorDetail(crystalSteelDoorAddParamVO.getLs(), crystalSteelDoorAddParamVO.getYs(),
             crystalSteelDoorAddParamVO.getDj(), crystalSteelDoorAddParamVO.getJe(),
             crystalSteelDoorAddParamVO.getHjpf(), crystalSteelDoorAddParamVO.getBlpf(),
             crystalSteelDoorAddParamVO.getHjsl(), crystalSteelDoorAddParamVO.getYjdb());
     try {
-      // 保存订单信息
-      OrderDetail orderDetailAdded = orderDetailDao.save(orderDetailToBeAdded);
+      // 添加订单基本信息
+      OrderDetail orderDetailAdded = orderService.orderAddDataPreDeal(crystalSteelDoorAddParamVO);
       // 保存晶钢门信息表
       CrystalSteelDoorDetail crystalSteelDoorDetailAdded = crystalSteelDoorDetailDao.save(crystalSteelDoorDetailToBeAdded);
       // 保存订单-商品信息关联表
@@ -110,13 +100,6 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
       orderGoodsToBeAdded.setSpid(crystalSteelDoorDetailAdded.getId());
       orderGoodsToBeAdded.setZt(BaseStatus.VALID.getValue());
       orderGoodsDao.save(orderGoodsToBeAdded);
-      // 保存订单-操作记录表
-      OrderRecord orderRecordToBeAdded = OrderRecordType.getNew();
-      orderRecordToBeAdded.setDdid(orderDetailAdded.getId());
-      // TODO
-      orderRecordToBeAdded.setCzr("张三");
-      orderRecordToBeAdded.setCzsj(BaseTimeTransform.localDateTimeToDate(nowTime));
-      orderRecordDao.save(orderRecordToBeAdded);
       for (CupboardDoorSize cupboardDoorSizeToBeAdded : crystalSteelDoorAddParamVO.getCupboardDoorSizes()) {
         // 保存尺寸信息
         CupboardDoorSize cupboardDoorSizeAdded = cupboardDoorSizeDao.save(cupboardDoorSizeToBeAdded);
