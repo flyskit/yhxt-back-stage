@@ -7,6 +7,8 @@ import com.yhxt.ddcl.vo.OrderAddDataBaseParamVO;
 import com.yhxt.ddcl.vo.OrderDelParamVO;
 import com.yhxt.ddcl.vo.OrderUpdateStatusVO;
 
+import java.util.Map;
+
 /**
  * @ClassName OrderService
  * @Author zqi
@@ -77,7 +79,7 @@ public interface OrderService {
    * @param ddid 订单编号
    * @return accessoryListInfo
    */
-  StringBuilder getAccessoryListInfo(String ddid);
+  Map<String, Object> getAccessoryListInfo(String ddid);
 
   /**
    * 删除配件

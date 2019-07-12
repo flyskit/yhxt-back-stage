@@ -44,6 +44,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName TitaniumAlloyDoorServiceImpl
@@ -243,7 +244,8 @@ public class TitaniumAlloyDoorServiceImpl implements TitaniumAlloyDoorService {
       OrderGoods orderGoods = orderGoodsDao.findByDdid(orderDetail.getId());
       TitaniumAlloyDoorDetail titaniumAlloyDoorDetail = titaniumAlloyDoorDetailDao.findById(orderGoods.getSpid());
       List<TitaniumAlloyDoorDetailSize> detailSizeLists = titaniumAlloyDoorDetailSizeDao.findByTjid(titaniumAlloyDoorDetail.getId());
-      StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
+      Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+      StringBuilder accessoryListInfo = (StringBuilder) map.get("accessoryListInfo");
       TitaniumAlloyDoorViewDetailVO titaniumAlloyDoorViewDetailVO = new TitaniumAlloyDoorViewDetailVO(orderDetail, titaniumAlloyDoorDetail, accessoryListInfo);
       if (orderGoods.getSplx().equals(GoodsType.TITANIUM_ALLOY_DOOR_HANGING.getValue())) {
         // 吊趟门
@@ -311,8 +313,9 @@ public class TitaniumAlloyDoorServiceImpl implements TitaniumAlloyDoorService {
     Integer totalReworkHangingDoorNum = 0;
     for (TitaniumAlloyHistoryRecordDTO titaniumAlloyHistoryRecordDTO : lists) {
       OrderDetail orderDetail = orderDetailDao.findByDdbh(titaniumAlloyHistoryRecordDTO.getDdbh());
-      StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-      titaniumAlloyHistoryRecordDTO.setPj(accessoryListInfo);
+      Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+      titaniumAlloyHistoryRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+      titaniumAlloyHistoryRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       if (titaniumAlloyHistoryRecordDTO.getDdlx().equals(OrderType.ORDER_REWORK.getValue())) {
         //返工
         if (titaniumAlloyHistoryRecordDTO.getSplx().equals(GoodsType.TITANIUM_ALLOY_DOOR_HANGING.getValue())) {
@@ -356,8 +359,9 @@ public class TitaniumAlloyDoorServiceImpl implements TitaniumAlloyDoorService {
       List<TitaniumAlloyHistoryRecordDTO> lists = titaniumAlloyDoorDetailDao.getDataByTemporary();
       for (TitaniumAlloyHistoryRecordDTO titaniumAlloyHistoryRecordDTO : lists) {
         OrderDetail orderDetail = orderDetailDao.findByDdbh(titaniumAlloyHistoryRecordDTO.getDdbh());
-        StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-        titaniumAlloyHistoryRecordDTO.setPj(accessoryListInfo);
+        Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+        titaniumAlloyHistoryRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+        titaniumAlloyHistoryRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       }
       return BaseMessage.success().add(lists);
     } catch (Exception e) {
@@ -381,8 +385,9 @@ public class TitaniumAlloyDoorServiceImpl implements TitaniumAlloyDoorService {
       Page<TitaniumAlloyHistoryRecordDTO> page = titaniumAlloyDoorDetailDao.condData(orderQueryParamVO, pageable);
       for (TitaniumAlloyHistoryRecordDTO titaniumAlloyHistoryRecordDTO : page.getContent()) {
         OrderDetail orderDetail = orderDetailDao.findByDdbh(titaniumAlloyHistoryRecordDTO.getDdbh());
-        StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-        titaniumAlloyHistoryRecordDTO.setPj(accessoryListInfo);
+        Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+        titaniumAlloyHistoryRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+        titaniumAlloyHistoryRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       }
       return BaseMessage.success().add(page);
     } catch (Exception e) {

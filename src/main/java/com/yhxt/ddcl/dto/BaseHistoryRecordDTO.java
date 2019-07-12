@@ -91,6 +91,11 @@ public class BaseHistoryRecordDTO {
    */
   private StringBuilder pj;
 
+  /**
+   * 配件金额
+   */
+  private BigDecimal pjje;
+
   public BaseHistoryRecordDTO() {
   }
 
@@ -110,6 +115,14 @@ public class BaseHistoryRecordDTO {
     this.dh = dh;
     this.czr = czr;
     this.czsj = czsj;
+  }
+
+  public BigDecimal getPjje() {
+    return pjje;
+  }
+
+  public void setPjje(BigDecimal pjje) {
+    this.pjje = pjje;
   }
 
   public StringBuilder getPj() {

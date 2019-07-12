@@ -26,10 +26,13 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName OrderServiceImpl
@@ -229,17 +232,22 @@ public class OrderServiceImpl implements OrderService {
    */
   @Override
   @Transactional(readOnly = true, rollbackFor = Exception.class)
-  public StringBuilder getAccessoryListInfo(String ddid) {
+  public Map<String, Object> getAccessoryListInfo(String ddid) {
     List<OrderAccessory> accessoryDetailList = orderAccessoryDao.findByDdidAndZt(ddid, BaseStatus.VALID.getValue());
     if (StringUtils.isEmpty(accessoryDetailList)) {
       return null;
     }
     StringBuilder accessoryListInfo = new StringBuilder();
+    BigDecimal accessoryMoney = new BigDecimal("0");
+    Map<String, Object> map = new HashMap<>(2);
     for (OrderAccessory orderAccessory : accessoryDetailList) {
       AccessoryDetail accessoryDetail = accessoryDetailDao.findById(orderAccessory.getPjid());
       accessoryListInfo.append(accessoryDetail.getMc()).append(orderAccessory.getPjsl()).append(accessoryDetail.getDw()).append("; ");
+      accessoryMoney = accessoryMoney.add(orderAccessory.getPjje());
     }
-    return accessoryListInfo;
+    map.put("accessoryListInfo", accessoryListInfo);
+    map.put("accessoryMoney", accessoryMoney);
+    return map;
   }
 
   /**

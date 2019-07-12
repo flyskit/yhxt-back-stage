@@ -42,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName CrystalSteelDoorServiceImpl
@@ -151,8 +152,9 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
     Integer totalReworkDoorNum = 0;
     for (HistoryRecordDTO historyRecordDTO : lists) {
       OrderDetail orderDetail = orderDetailDao.findByDdbh(historyRecordDTO.getDdbh());
-      StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-      historyRecordDTO.setPj(accessoryListInfo);
+      Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+      historyRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+      historyRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       if (historyRecordDTO.getDdlx().equals(OrderType.ORDER_REWORK.getValue())) {
         // 返工单
         totalReworkNum = totalReworkNum + 1;
@@ -183,8 +185,9 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
       List<HistoryRecordDTO> lists = crystalSteelDoorDetailDao.getDataByTemporary();
       for (HistoryRecordDTO historyRecordDTO : lists) {
         OrderDetail orderDetail = orderDetailDao.findByDdbh(historyRecordDTO.getDdbh());
-        StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-        historyRecordDTO.setPj(accessoryListInfo);
+        Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+        historyRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+        historyRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       }
       return BaseMessage.success().add(lists);
     } catch (Exception e) {
@@ -212,7 +215,8 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
         CupboardDoorSize size = cupboardDoorSizeDao.findById(detailSize.getCcid());
         sizeLists.add(size);
       }
-      StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
+      Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+      StringBuilder accessoryListInfo = (StringBuilder) map.get("accessoryListInfo");
       if (StringUtils.isEmpty(accessoryListInfo)) {
         return BaseMessage.success().add(new CrystalSteelDoorViewDetailVO(orderDetail, crystalSteelDoorDetail, sizeLists));
       }
@@ -273,8 +277,9 @@ public class CrystalSteelDoorServiceImpl implements CrystalSteelDoorService {
       Page<HistoryRecordDTO> page = crystalSteelDoorDetailDao.condData(orderQueryParamVO, pageable);
       for (HistoryRecordDTO historyRecordDTO : page.getContent()) {
         OrderDetail orderDetail = orderDetailDao.findByDdbh(historyRecordDTO.getDdbh());
-        StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-        historyRecordDTO.setPj(accessoryListInfo);
+        Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+        historyRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+        historyRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       }
       return BaseMessage.success().add(page);
     } catch (Exception e) {

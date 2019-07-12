@@ -42,6 +42,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @ClassName AcrylicServiceImpl
@@ -150,8 +151,9 @@ public class AcrylicServiceImpl implements AcrylicService {
     Integer totalReworkDoorNum = 0;
     for (AcrylicHistoryRecordDTO acrylicHistoryRecordDTO : lists) {
       OrderDetail orderDetail = orderDetailDao.findByDdbh(acrylicHistoryRecordDTO.getDdbh());
-      StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-      acrylicHistoryRecordDTO.setPj(accessoryListInfo);
+      Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+      acrylicHistoryRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+      acrylicHistoryRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       if (acrylicHistoryRecordDTO.getDdlx().equals(OrderType.ORDER_REWORK.getValue())) {
         //返工单
         totalReworkNum = totalReworkNum + 1;
@@ -182,8 +184,9 @@ public class AcrylicServiceImpl implements AcrylicService {
       List<AcrylicHistoryRecordDTO> lists = acrylicDetailDao.getDataByTemporary();
       for (AcrylicHistoryRecordDTO acrylicHistoryRecordDTO : lists) {
         OrderDetail orderDetail = orderDetailDao.findByDdbh(acrylicHistoryRecordDTO.getDdbh());
-        StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-        acrylicHistoryRecordDTO.setPj(accessoryListInfo);
+        Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+        acrylicHistoryRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+        acrylicHistoryRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       }
       return BaseMessage.success().add(lists);
     } catch (Exception e) {
@@ -245,7 +248,8 @@ public class AcrylicServiceImpl implements AcrylicService {
         CupboardDoorSize size = cupboardDoorSizeDao.findById(detailSize.getCcid());
         sizeLists.add(size);
       }
-      StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
+      Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+      StringBuilder accessoryListInfo = (StringBuilder) map.get("accessoryListInfo");
       if (StringUtils.isEmpty(accessoryListInfo)) {
         return BaseMessage.success().add(new AcrylicViewDetailVO(orderDetail, acrylicDetail, sizeLists));
       }
@@ -269,10 +273,11 @@ public class AcrylicServiceImpl implements AcrylicService {
     Pageable pageable = new PageRequest(pageCond.getPage(), pageCond.getPageSize());
     try {
       Page<AcrylicHistoryRecordDTO> page = acrylicDetailDao.condData(orderQueryParamVO, pageable);
-      for (AcrylicHistoryRecordDTO historyRecordDTO : page.getContent()) {
-        OrderDetail orderDetail = orderDetailDao.findByDdbh(historyRecordDTO.getDdbh());
-        StringBuilder accessoryListInfo = orderService.getAccessoryListInfo(orderDetail.getId());
-        historyRecordDTO.setPj(accessoryListInfo);
+      for (AcrylicHistoryRecordDTO acrylicHistoryRecordDTO : page.getContent()) {
+        OrderDetail orderDetail = orderDetailDao.findByDdbh(acrylicHistoryRecordDTO.getDdbh());
+        Map<String, Object> map = orderService.getAccessoryListInfo(orderDetail.getId());
+        acrylicHistoryRecordDTO.setPj((StringBuilder) map.get("accessoryListInfo"));
+        acrylicHistoryRecordDTO.setPjje((BigDecimal) map.get("accessoryMoney"));
       }
       return BaseMessage.success().add(page);
     } catch (Exception e) {
