@@ -13,15 +13,6 @@ import java.util.Date;
  * @Description 查询记录-返回字段
  */
 public class BlisterHistoryRecordDTO extends BaseHistoryRecordDTO {
-  /**
-   * 板材
-   */
-  private String bc;
-
-  /**
-   * 单价
-   */
-  private BigDecimal dj;
 
   /**
    * 合计平方
@@ -32,27 +23,9 @@ public class BlisterHistoryRecordDTO extends BaseHistoryRecordDTO {
     super();
   }
 
-  public BlisterHistoryRecordDTO(String ddbh, String khxm, Integer ddlx, Integer ddly, Integer scsl, Integer gq, BigDecimal je, Integer hjsl, String bz, Integer yjdb, Date wgsj, String dz, String dh, String czr, Date czsj, String bc, BigDecimal dj, BigDecimal hjpf) {
+  public BlisterHistoryRecordDTO(String ddbh, String khxm, Integer ddlx, Integer ddly, Integer scsl, Integer gq, BigDecimal je, Integer hjsl, String bz, Integer yjdb, Date wgsj, String dz, String dh, String czr, Date czsj, BigDecimal hjpf) {
     super(ddbh, khxm, ddlx, ddly, scsl, gq, je, hjsl, bz, yjdb, wgsj, dz, dh, czr, czsj);
-    this.bc = bc;
-    this.dj = dj;
     this.hjpf = hjpf;
-  }
-
-  public String getBc() {
-    return bc;
-  }
-
-  public void setBc(String bc) {
-    this.bc = bc;
-  }
-
-  public BigDecimal getDj() {
-    return dj;
-  }
-
-  public void setDj(BigDecimal dj) {
-    this.dj = dj;
   }
 
   public BigDecimal getHjpf() {
@@ -66,8 +39,6 @@ public class BlisterHistoryRecordDTO extends BaseHistoryRecordDTO {
   @Override
   public String toString() {
     return "BlisterHistoryRecordDTO{" +
-            "bc='" + bc + '\'' +
-            ", dj=" + dj +
             ", hjpf=" + hjpf +
             '}';
   }

@@ -33,6 +33,12 @@ public class BlisterSize implements Serializable {
   private String wz;
 
   /**
+   * 板材
+   */
+  @Column(name = "bc")
+  private String bc;
+
+  /**
    * 造型
    */
   @Column(name = "zx")
@@ -69,6 +75,18 @@ public class BlisterSize implements Serializable {
   private BigDecimal pf;
 
   /**
+   * 单价
+   */
+  @Column(name = "dj")
+  private BigDecimal dj;
+
+  /**
+   * 金额
+   */
+  @Column(name = "je")
+  private BigDecimal je;
+
+  /**
    * 备注
    */
   @Column(name = "bz")
@@ -77,15 +95,42 @@ public class BlisterSize implements Serializable {
   public BlisterSize() {
   }
 
-  public BlisterSize(String wz, String zx, String ys, BigDecimal gd, BigDecimal kd, Integer sl, BigDecimal pf, String bz) {
+  public BlisterSize(String wz, String bc, String zx, String ys, BigDecimal gd, BigDecimal kd, Integer sl, BigDecimal pf, BigDecimal dj, BigDecimal je, String bz) {
     this.wz = wz;
+    this.bc = bc;
     this.zx = zx;
     this.ys = ys;
     this.gd = gd;
     this.kd = kd;
     this.sl = sl;
     this.pf = pf;
+    this.dj = dj;
+    this.je = je;
     this.bz = bz;
+  }
+
+  public String getBc() {
+    return bc;
+  }
+
+  public void setBc(String bc) {
+    this.bc = bc;
+  }
+
+  public BigDecimal getDj() {
+    return dj;
+  }
+
+  public void setDj(BigDecimal dj) {
+    this.dj = dj;
+  }
+
+  public BigDecimal getJe() {
+    return je;
+  }
+
+  public void setJe(BigDecimal je) {
+    this.je = je;
   }
 
   public String getId() {
@@ -165,12 +210,15 @@ public class BlisterSize implements Serializable {
     return "BlisterSize{" +
             "id='" + id + '\'' +
             ", wz='" + wz + '\'' +
+            ", bc='" + bc + '\'' +
             ", zx='" + zx + '\'' +
             ", ys='" + ys + '\'' +
             ", gd=" + gd +
             ", kd=" + kd +
             ", sl=" + sl +
             ", pf=" + pf +
+            ", dj=" + dj +
+            ", je=" + je +
             ", bz='" + bz + '\'' +
             '}';
   }

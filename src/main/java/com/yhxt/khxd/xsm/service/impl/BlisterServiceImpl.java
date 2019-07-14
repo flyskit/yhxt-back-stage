@@ -85,8 +85,7 @@ public class BlisterServiceImpl implements BlisterService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public BaseMessage addData(BlisterAddParamVO blisterAddParamVO) {
-    BlisterDetail blisterDetailToBeAdded = new BlisterDetail(blisterAddParamVO.getBc(), blisterAddParamVO.getDj(), blisterAddParamVO.getJe(),
-            blisterAddParamVO.getHjpf(), blisterAddParamVO.getHjsl(), blisterAddParamVO.getYjdb());
+    BlisterDetail blisterDetailToBeAdded = new BlisterDetail(blisterAddParamVO.getJe(), blisterAddParamVO.getHjpf(), blisterAddParamVO.getHjsl(), blisterAddParamVO.getYjdb());
     try {
       // 添加订单基本信息
       OrderDetail orderDetail = orderService.orderAddDataPreDeal(blisterAddParamVO);
@@ -204,7 +203,7 @@ public class BlisterServiceImpl implements BlisterService {
             blisterAddParamVO.getKhxm(), blisterAddParamVO.getDz(), blisterAddParamVO.getDh(), blisterAddParamVO.getBz());
     OrderGoods orderGoods = orderGoodsDao.findByDdid(orderDetail.getId());
     BlisterDetail blisterDetail = blisterDetailDao.findById(orderGoods.getSpid());
-    blisterDetail.updateDetail(blisterAddParamVO.getBc(), blisterAddParamVO.getDj(), blisterAddParamVO.getHjpf(), blisterAddParamVO.getHjsl(), blisterAddParamVO.getYjdb(), blisterAddParamVO.getJe());
+    blisterDetail.updateDetail(blisterAddParamVO.getHjpf(), blisterAddParamVO.getHjsl(), blisterAddParamVO.getYjdb(), blisterAddParamVO.getJe());
     OrderRecord orderRecordToBeAdded = OrderRecordType.getUpdate();
     orderRecordToBeAdded.setDdid(orderDetail.getId());
     // TODO 获取当前登录角色信息

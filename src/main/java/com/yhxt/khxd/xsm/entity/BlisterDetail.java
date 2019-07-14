@@ -27,18 +27,6 @@ public class BlisterDetail implements Serializable {
   private String id;
 
   /**
-   * 板材
-   */
-  @Column(name = "bc")
-  private String bc;
-
-  /**
-   * 单价
-   */
-  @Column(name = "dj")
-  private BigDecimal dj;
-
-  /**
    * 金额
    */
   @Column(name = "je")
@@ -65,16 +53,12 @@ public class BlisterDetail implements Serializable {
   /**
    * 更新记录
    *
-   * @param bc   板材
-   * @param dj   单价
    * @param hjpf 合计平方
    * @param hjsl 合计数量
    * @param yjdb 预计打包
    * @param je   金额
    */
-  public void updateDetail(String bc, BigDecimal dj, BigDecimal hjpf, Integer hjsl, Integer yjdb, BigDecimal je) {
-    this.setBc(bc);
-    this.setDj(dj);
+  public void updateDetail(BigDecimal hjpf, Integer hjsl, Integer yjdb, BigDecimal je) {
     this.setHjpf(hjpf);
     this.setHjsl(hjsl);
     this.setYjdb(yjdb);
@@ -84,9 +68,7 @@ public class BlisterDetail implements Serializable {
   public BlisterDetail() {
   }
 
-  public BlisterDetail(String bc, BigDecimal dj, BigDecimal je, BigDecimal hjpf, Integer hjsl, Integer yjdb) {
-    this.bc = bc;
-    this.dj = dj;
+  public BlisterDetail(BigDecimal je, BigDecimal hjpf, Integer hjsl, Integer yjdb) {
     this.je = je;
     this.hjpf = hjpf;
     this.hjsl = hjsl;
@@ -99,22 +81,6 @@ public class BlisterDetail implements Serializable {
 
   public void setId(String id) {
     this.id = id;
-  }
-
-  public String getBc() {
-    return bc;
-  }
-
-  public void setBc(String bc) {
-    this.bc = bc;
-  }
-
-  public BigDecimal getDj() {
-    return dj;
-  }
-
-  public void setDj(BigDecimal dj) {
-    this.dj = dj;
   }
 
   public BigDecimal getJe() {
@@ -153,8 +119,6 @@ public class BlisterDetail implements Serializable {
   public String toString() {
     return "BlisterDetail{" +
             "id='" + id + '\'' +
-            ", bc='" + bc + '\'' +
-            ", dj=" + dj +
             ", je='" + je + '\'' +
             ", hjpf=" + hjpf +
             ", hjsl=" + hjsl +

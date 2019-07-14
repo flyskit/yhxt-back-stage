@@ -14,15 +14,6 @@ import java.util.LinkedList;
  * @Description 吸塑门-添加订单
  */
 public class BlisterAddParamVO extends OrderAddDataBaseParamVO {
-  /**
-   * 板材
-   */
-  private String bc;
-
-  /**
-   * 单价
-   */
-  private BigDecimal dj;
 
   /**
    * 合计平方
@@ -35,7 +26,7 @@ public class BlisterAddParamVO extends OrderAddDataBaseParamVO {
   private Integer hjsl;
 
   /**
-   * 金额
+   * 合计金额
    */
   private BigDecimal je;
 
@@ -53,31 +44,13 @@ public class BlisterAddParamVO extends OrderAddDataBaseParamVO {
     super();
   }
 
-  public BlisterAddParamVO(String ddbh, Integer ddly, Integer ddlx, Integer scsl, Integer gq, String khxm, String dz, String dh, String bz, Integer ddzt, String bc, BigDecimal dj, BigDecimal hjpf, Integer hjsl, BigDecimal je, Integer yjdb, LinkedList<BlisterSize> blisterSizes) {
+  public BlisterAddParamVO(String ddbh, Integer ddly, Integer ddlx, Integer scsl, Integer gq, String khxm, String dz, String dh, String bz, Integer ddzt, BigDecimal hjpf, Integer hjsl, BigDecimal je, Integer yjdb, LinkedList<BlisterSize> blisterSizes) {
     super(ddbh, ddly, ddlx, scsl, gq, khxm, dz, dh, bz, ddzt);
-    this.bc = bc;
-    this.dj = dj;
     this.hjpf = hjpf;
     this.hjsl = hjsl;
     this.je = je;
     this.yjdb = yjdb;
     this.blisterSizes = blisterSizes;
-  }
-
-  public String getBc() {
-    return bc;
-  }
-
-  public void setBc(String bc) {
-    this.bc = bc;
-  }
-
-  public BigDecimal getDj() {
-    return dj;
-  }
-
-  public void setDj(BigDecimal dj) {
-    this.dj = dj;
   }
 
   public BigDecimal getHjpf() {
@@ -123,8 +96,6 @@ public class BlisterAddParamVO extends OrderAddDataBaseParamVO {
   @Override
   public String toString() {
     return "BlisterAddParamVO{" +
-            "bc='" + bc + '\'' +
-            ", dj=" + dj +
             ", hjpf=" + hjpf +
             ", hjsl=" + hjsl +
             ", je=" + je +

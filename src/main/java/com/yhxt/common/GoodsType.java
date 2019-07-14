@@ -17,7 +17,7 @@ public enum GoodsType {
    * 钛合金-吊趟门：4
    * 吸塑门：5
    */
-  CRYSTAL_STEEL_DOOR(1), ACRYLIC(2), TITANIUM_ALLOY_DOOR_SWING(3), TITANIUM_ALLOY_DOOR_HANGING(4), BLISTER(5);
+  CRYSTAL_STEEL_DOOR(1), ACRYLIC(2), TITANIUM_ALLOY_DOOR_SWING(3), TITANIUM_ALLOY_DOOR_HANGING(4), BLISTER(5), WARDROBE_SLIDE(6);
 
   private final Integer value;
 
@@ -47,5 +47,9 @@ public enum GoodsType {
 
   public static OrderGoods getBlister() {
     return new OrderGoods(GoodsType.BLISTER.value, "吸塑门");
+  }
+
+  public static OrderGoods getWardrobeSlide() {
+    return new OrderGoods(GoodsType.WARDROBE_SLIDE.value, "衣柜移门");
   }
 }
