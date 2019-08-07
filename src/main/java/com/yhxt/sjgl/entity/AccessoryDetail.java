@@ -84,6 +84,15 @@ public class AccessoryDetail implements Serializable {
     this.zt = zt;
   }
 
+  public AccessoryDetail(String mc, String bh, BigDecimal dj, String dw, String gg, Boolean zt) {
+    this.mc = mc;
+    this.bh = bh;
+    this.dj = dj;
+    this.dw = dw;
+    this.gg = gg;
+    this.zt = zt;
+  }
+
   public Boolean getZt() {
     return zt;
   }

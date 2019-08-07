@@ -47,4 +47,20 @@ public interface AccessoryDetailDao extends CrudRepository<AccessoryDetail, Stri
    * @return accessoryDetail
    */
   AccessoryDetail findById(String id);
+
+  /**
+   * 获取最新记录
+   *
+   * @param zt 状态
+   * @return accessoryDetail
+   */
+  AccessoryDetail findFirstByZtOrderByBhDesc(Boolean zt);
+
+  /**
+   * 根据mc查询记录
+   *
+   * @param mc 名称
+   * @return accessoryDetail
+   */
+  AccessoryDetail findByMc(String mc);
 }

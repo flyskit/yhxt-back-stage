@@ -20,4 +20,22 @@ public interface CupboardDoorDetailSizeDao extends CrudRepository<CupboardDoorDe
    * @return cupboardDoorDetailSize
    */
   List<CupboardDoorDetailSize> findByMbid(String mbid);
+
+  /**
+   * 根据门板ID标识查询记录
+   *
+   * @param mbid ID标识
+   * @param zt   状态
+   * @return lists
+   */
+  List<CupboardDoorDetailSize> findByMbidAndZt(String mbid, Boolean zt);
+
+  /**
+   * 根据尺寸id查询记录
+   *
+   * @param id ID标识
+   * @param zt 状态
+   * @return cupboardDoorDetailSize
+   */
+  CupboardDoorDetailSize findByCcidAndZt(String id, Boolean zt);
 }

@@ -1,0 +1,3 @@
+2019-07-31 16:02:07  [ localhost-startStop-2:369076032 ] - [ INFO ]  Closing WebApplicationContext for namespace 'dispatcher-servlet': startup date [Sat Jul 27 09:31:05 CST 2019]; parent: Root WebApplicationContext
+2019-07-31 16:02:07  [ localhost-startStop-2:369076052 ] - [ INFO ]  Closing Root WebApplicationContext: startup date [Sat Jul 27 09:30:51 CST 2019]; root of context hierarchy
+2019-07-31 16:02:07  [ localhost-startStop-2:369076073 ] - [ INFO ]  Closing JPA EntityManagerFactory for persistence unit 'default'

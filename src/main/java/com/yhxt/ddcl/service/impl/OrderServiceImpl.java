@@ -198,8 +198,15 @@ public class OrderServiceImpl implements OrderService {
   @Override
   @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
   public BaseMessage addAccessory(OrderAccessoryParamVO orderAccessoryParamVO) {
+    AccessoryDetail accessoryDetail;
     OrderDetail orderDetail = orderDetailDao.findByDdbh(orderAccessoryParamVO.getDdbh());
-    AccessoryDetail accessoryDetail = accessoryDetailDao.findByBh(orderAccessoryParamVO.getBh());
+    accessoryDetail = accessoryDetailDao.findByMc(orderAccessoryParamVO.getMc());
+    if (StringUtils.isEmpty(accessoryDetail)) {
+      AccessoryDetail accessoryDetail1Last = accessoryDetailDao.findFirstByZtOrderByBhDesc(BaseStatus.VALID.getValue());
+      String bh = String.valueOf(Integer.parseInt(accessoryDetail1Last.getBh()) + 1);
+      accessoryDetail = accessoryDetailDao.save(new AccessoryDetail(orderAccessoryParamVO.getMc(), bh, orderAccessoryParamVO.getDj(),
+              orderAccessoryParamVO.getDw(), orderAccessoryParamVO.getGg(), BaseStatus.VALID.getValue()));
+    }
     OrderAccessory orderAccessory = new OrderAccessory(orderDetail.getId(), accessoryDetail.getId(), orderAccessoryParamVO.getPjsl(),
             orderAccessoryParamVO.getDj(), orderAccessoryParamVO.getPjje(), BaseStatus.VALID.getValue());
     try {

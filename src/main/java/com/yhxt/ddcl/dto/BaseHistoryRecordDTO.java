@@ -117,6 +117,23 @@ public class BaseHistoryRecordDTO {
     this.czsj = czsj;
   }
 
+  public BaseHistoryRecordDTO(String ddbh, String khxm, Integer ddlx, Integer ddly, Integer scsl, Integer gq, BigDecimal je, String bz, Integer yjdb, Date wgsj, String dz, String dh, String czr, Date czsj) {
+    this.ddbh = ddbh;
+    this.khxm = khxm;
+    this.ddlx = ddlx;
+    this.ddly = ddly;
+    this.scsl = scsl;
+    this.gq = gq;
+    this.je = je;
+    this.bz = bz;
+    this.yjdb = yjdb;
+    this.wgsj = wgsj;
+    this.dz = dz;
+    this.dh = dh;
+    this.czr = czr;
+    this.czsj = czsj;
+  }
+
   public BigDecimal getPjje() {
     return pjje;
   }

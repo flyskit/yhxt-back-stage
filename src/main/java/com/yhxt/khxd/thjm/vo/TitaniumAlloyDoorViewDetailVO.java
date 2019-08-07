@@ -12,7 +12,7 @@ import java.util.List;
  * @Author zqi
  * @Date 2019/7/9 14:03
  * @Version 1.0
- * @Description
+ * @Description 查看详细信息
  */
 public class TitaniumAlloyDoorViewDetailVO {
   /**
